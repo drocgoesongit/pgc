@@ -1,4 +1,4 @@
-# pgc
+# PGC
 
 # Pet Grooming Appointment Booking App
 

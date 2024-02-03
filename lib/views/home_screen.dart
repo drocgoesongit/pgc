@@ -6,6 +6,8 @@ import 'package:pgc/constants/color_const.dart';
 import 'package:pgc/constants/text_const.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:pgc/views/all_services_screen.dart';
+import 'package:pgc/views/appointment_screen.dart';
+import 'package:pgc/views/dashboard_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -42,10 +44,18 @@ class _HomeScreenState extends State<HomeScreen> {
                             SizedBox(
                               width: MediaQuery.of(context).size.width / 18,
                             ),
-                            Text(
-                              "Paws and Claws",
-                              style: kSmallParaTextStyle.copyWith(
-                                  color: Colors.white),
+                            GestureDetector(
+                              onTap: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => Dashboard()));
+                              },
+                              child: Text(
+                                "Paws and Claws",
+                                style: kSmallParaTextStyle.copyWith(
+                                    color: Colors.white),
+                              ),
                             ),
                           ],
                         ),
@@ -82,7 +92,13 @@ class _HomeScreenState extends State<HomeScreen> {
                           height: 50,
                           width: double.infinity,
                           child: OutlinedButton(
-                            onPressed: () {},
+                            onPressed: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          const AppointmentScreen()));
+                            },
                             style: OutlinedButton.styleFrom(
                               backgroundColor:
                                   const Color(0xFF877FFA), // Your desired color

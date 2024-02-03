@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pgc/constants/color_const.dart';
 import 'package:pgc/constants/text_const.dart';
 
 class AppointmentCard extends StatelessWidget {
@@ -24,7 +25,7 @@ class AppointmentCard extends StatelessWidget {
       shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(15),
           side: BorderSide(
-            color: Colors.blueGrey.shade300,
+            color: softGrayStrokeCustomColor,
             width: 2,
           )),
       surfaceTintColor: Colors.white,

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pgc/constants/color_const.dart';
 import 'package:pgc/constants/text_const.dart';
 
 class SquareCard extends StatelessWidget {
@@ -17,7 +18,7 @@ class SquareCard extends StatelessWidget {
       shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(15.46),
           side: BorderSide(
-            color: Colors.blueGrey.shade300,
+            color: softGrayStrokeCustomColor,
             width: 2,
           )),
       surfaceTintColor: Colors.white,

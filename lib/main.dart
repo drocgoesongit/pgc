@@ -2,7 +2,13 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:pgc/firebase_options.dart';
 import 'package:pgc/views/all_services_screen.dart';
+import 'package:pgc/views/appointment_screen.dart';
+import 'package:pgc/views/dashboard_screen.dart';
 import 'package:pgc/views/home_screen.dart';
+import 'package:pgc/views/signin_screen.dart';
+import 'package:pgc/views/signup_screen.dart';
+import 'package:pgc/views/splash_screen.dart';
+import 'package:pgc/views/forgot_password_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -23,7 +29,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: const HomeScreen(),
+      home: SplashScreen(),
     );
   }
 }

@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:pgc/admin_views/add_new_service_screen.dart';
+import 'package:pgc/admin_views/all_appointments_screen.dart';
 import 'package:pgc/components/appointment_rectangle_card.dart';
 import 'package:pgc/components/review_card.dart';
 import 'package:pgc/components/service_square_card.dart';
@@ -6,6 +8,7 @@ import 'package:pgc/constants/color_const.dart';
 import 'package:pgc/constants/text_const.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:pgc/views/all_services_screen.dart';
+import 'package:pgc/views/profile_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -18,89 +21,125 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      drawer: NavigationDrawer(
+        children: [],
+      ),
       body: SingleChildScrollView(
         child: Column(children: [
           Column(
             children: [
-              Container(
-                padding: EdgeInsets.all(MediaQuery.of(context).size.width / 20),
-                height: MediaQuery.of(context).size.height / 2.3,
-                width: double.infinity,
-                decoration: BoxDecoration(
+              ClipPath(
+                clipper: const ShapeBorderClipper(
+                  shape: ContinuousRectangleBorder(
+                      borderRadius: BorderRadius.only(
+                          bottomLeft: Radius.circular(60),
+                          bottomRight: Radius.circular(60))),
+                ),
+                child: Container(
+                  padding:
+                      EdgeInsets.all(MediaQuery.of(context).size.width / 20),
+                  width: double.infinity,
+                  decoration: BoxDecoration(
                     color: primaryBlueCustomColor,
-                    borderRadius: const BorderRadius.only(
-                        bottomLeft: Radius.circular(35.33),
-                        bottomRight: Radius.circular(35.33))),
-                child: Column(
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Row(
-                          children: [
-                            Image.asset("assets/images/filter.png"),
-                            SizedBox(
-                              width: MediaQuery.of(context).size.width / 18,
-                            ),
-                            Text(
-                              "Paws and Claws",
-                              style: kSmallParaTextStyle.copyWith(
-                                  color: Colors.white),
-                            ),
-                          ],
-                        ),
-                        Container(
-                          child: Image.asset("assets/images/profile.png"),
-                          decoration: const BoxDecoration(
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(15.46))),
-                        ),
-                      ],
-                    ),
-                    // SizedBox(
-                    //   height: MediaQuery.of(context).size.height / 100,
-                    // ),
-                    Stack(
-                      alignment: Alignment.bottomCenter,
-                      children: [
-                        Row(
-                          children: [
-                            Text(
-                              "Elevate Your\nPet Style!",
-                              style: kMainTitleBoldTextStyle.copyWith(
-                                  color: Colors.white),
-                            ),
-                            Center(
-                              child: Container(
-                                child:
-                                    Image.asset("assets/images/dogflyer.png"),
+                  ),
+                  child: Column(
+                    children: [
+                      SizedBox(
+                        height: 20,
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Row(
+                            children: [
+                              Image.asset("assets/images/filter.png"),
+                              SizedBox(
+                                width: MediaQuery.of(context).size.width / 18,
                               ),
-                            ),
-                          ],
-                        ),
-                        Container(
-                          height: 50,
-                          width: double.infinity,
-                          child: OutlinedButton(
-                            onPressed: () {},
-                            style: OutlinedButton.styleFrom(
-                              backgroundColor:
-                                  const Color(0xFF877FFA), // Your desired color
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(15.46),
+                              GestureDetector(
+                                onTap: () {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              AllAppointmentsScreen()));
+                                },
+                                child: Text(
+                                  "Paws and Claws",
+                                  style: kSmallParaTextStyle.copyWith(
+                                      color: Colors.white),
+                                ),
                               ),
-                              // fixedSize: Size.fromHeight(58), // Your desired height
-                            ),
-                            child: Text(
-                              "Book Appointment",
-                              style: kSubHeadingTextStyle.copyWith(
-                                  color: Colors.white),
+                            ],
+                          ),
+                          GestureDetector(
+                            onTap: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => ProfileScreen()));
+                            },
+                            child: Container(
+                              child: Image.asset("assets/images/profile.png"),
+                              decoration: const BoxDecoration(
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(15.46))),
                             ),
                           ),
-                        ),
-                      ],
-                    ),
-                  ],
+                        ],
+                      ),
+                      // SizedBox(
+                      //   height: MediaQuery.of(context).size.height / 100,
+                      // ),
+                      Stack(
+                        alignment: Alignment.bottomCenter,
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              Text(
+                                "Elevate Your\nPet Style!",
+                                style: kMainTitleBoldTextStyle.copyWith(
+                                    color: Colors.white),
+                              ),
+                              Center(
+                                child: Container(
+                                  child:
+                                      Image.asset("assets/images/dogflyer.png"),
+                                ),
+                              ),
+                            ],
+                          ),
+                          Container(
+                            height: 50,
+                            width: double.infinity,
+                            child: ElevatedButton(
+                              onPressed: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            const ServicesListScreen()));
+                              },
+                              style: ElevatedButton.styleFrom(
+                                primary: const Color(
+                                    0xFF877FFA), // Your desired color
+                                shape: ContinuousRectangleBorder(
+                                  borderRadius: BorderRadius.circular(40),
+                                ),
+                                // fixedSize: Size.fromHeight(58), // Your desired height
+                              ),
+                              child: Text(
+                                "Book Appointment",
+                                style: kButtonBigTextStyle.copyWith(
+                                    color: Colors.white),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ],
@@ -114,8 +153,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 children: [
                   Text(
                     "Services",
-                    style: kSmallParaTextStyle.copyWith(
-                        fontWeight: FontWeight.w600),
+                    style: kSubHeadingTextStyle,
                   ),
                   GestureDetector(
                     onTap: () {
@@ -172,7 +210,7 @@ class _HomeScreenState extends State<HomeScreen> {
               Text(
                 "Upcoming appointments",
                 style:
-                    kSmallParaTextStyle.copyWith(fontWeight: FontWeight.bold),
+                    kSubHeadingTextStyle.copyWith(fontWeight: FontWeight.bold),
               ),
               const AppointmentCard(
                 image: 'assets/images/petblue.png',
@@ -187,7 +225,7 @@ class _HomeScreenState extends State<HomeScreen> {
               Text(
                 "Reviews",
                 style:
-                    kSmallParaTextStyle.copyWith(fontWeight: FontWeight.bold),
+                    kSubHeadingTextStyle.copyWith(fontWeight: FontWeight.bold),
               ),
               SizedBox(
                 height: MediaQuery.of(context).size.height / 60,
@@ -205,7 +243,7 @@ class _HomeScreenState extends State<HomeScreen> {
               Text(
                 "Brand values",
                 style:
-                    kSmallParaTextStyle.copyWith(fontWeight: FontWeight.bold),
+                    kSubHeadingTextStyle.copyWith(fontWeight: FontWeight.bold),
               ),
               SizedBox(
                 height: MediaQuery.of(context).size.height / 60,
@@ -236,7 +274,7 @@ class _HomeScreenState extends State<HomeScreen> {
               Text(
                 "Gallery",
                 style:
-                    kSmallParaTextStyle.copyWith(fontWeight: FontWeight.bold),
+                    kSubHeadingTextStyle.copyWith(fontWeight: FontWeight.bold),
               ),
               SizedBox(
                 height: MediaQuery.of(context).size.height / 60,

@@ -9,9 +9,16 @@ TextStyle kMainTitleBoldTextStyle = TextStyle(
 );
 
 TextStyle kSubHeadingTextStyle = TextStyle(
-  fontSize: 18,
+  fontSize: 14,
   fontFamily: 'Gilroy',
-  fontWeight: FontWeight.w500,
+  fontWeight: FontWeight.w600,
+  color: primaryBlueSoftenCustomColor,
+);
+
+TextStyle kButtonBigTextStyle = TextStyle(
+  fontSize: 16,
+  fontFamily: 'Gilroy',
+  fontWeight: FontWeight.w600,
   color: primaryBlueSoftenCustomColor,
 );
 

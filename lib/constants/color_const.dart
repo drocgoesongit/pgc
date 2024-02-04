@@ -7,3 +7,5 @@ Color softGrayStrokeCustomColor =
 Color primaryBlueSoftenCustomColor =
     const Color(0xFF263257); // soft version of main color for text
 Color softWhiteCustomColor = const Color(0xFFF8F8F8);
+
+Color tealLightCustomColor = const Color(0xFFC3E1E0);

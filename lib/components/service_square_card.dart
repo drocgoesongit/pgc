@@ -60,6 +60,3 @@ class SquareCard extends StatelessWidget {
     );
   }
 }
-
-// Example usage:
-// CustomCard(imagePath: 'assets/example_image.jpg', text: 'Example Text');

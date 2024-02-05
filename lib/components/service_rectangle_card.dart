@@ -28,16 +28,13 @@ class ServiceCard extends StatelessWidget {
                 builder: (context) => ServicesDetailScreen(
                     serviceModel: model, serviceId: model.serviceId)));
       },
-      child: ClipPath(
-        clipper: ShapeBorderClipper(
-          shape: ContinuousRectangleBorder(
-              borderRadius: const BorderRadius.only(
-                  bottomLeft: Radius.circular(30),
-                  bottomRight: Radius.circular(30)),
-              side: BorderSide(
-                color: softGrayStrokeCustomColor,
-                width: 2,
-              )),
+      child: Card(
+        shape: ContinuousRectangleBorder(
+          borderRadius: BorderRadius.circular(30),
+          side: BorderSide(
+            color: softGrayStrokeCustomColor,
+            width: 2,
+          ),
         ),
         child: Container(
           color: Colors.white,

@@ -3,11 +3,13 @@ import 'dart:developer';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:pgc/admin_views/appointment_detail.dart';
+import 'package:pgc/components/admin_rectangle_card.dart';
 import 'package:pgc/constants/color_const.dart';
 import 'package:pgc/constants/const.dart';
 import 'package:pgc/constants/helper_class.dart';
 import 'package:pgc/constants/text_const.dart';
 import 'package:pgc/model/appointment_model.dart';
+import 'package:pgc/views/all_services_screen.dart';
 
 class AllAppointmentsScreen extends StatefulWidget {
   @override
@@ -91,103 +93,220 @@ class _AllAppointmentsScreenState extends State<AllAppointmentsScreen> {
                 child: Text('No appointments found'),
               );
             } else {
-              return Column(
-                children: [
-                  // Date list
-                  Text(
-                    "Dates",
-                    style: kSubHeadingTextStyle,
-                  ),
-                  const SizedBox(
-                    height: 8,
-                  ),
-                  Container(
-                    height: 100,
-                    child: ListView.builder(
-                      scrollDirection: Axis.horizontal,
-                      itemCount: datesList.length,
-                      itemBuilder: (context, index) {
-                        return ClipPath(
-                          clipper: ShapeBorderClipper(
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(16),
-                            ),
-                          ),
-                          child: Container(
-                            width: 80,
-                            child: GestureDetector(
-                              onTap: () {
-                                setState(() {
-                                  log("selected date = ${datesList[index]}");
-                                  selectedDate = datesList[index];
-                                });
-                              },
-                              child: Container(
-                                color: selectedDate == datesList[index]
-                                    ? primaryBlueSoftenCustomColor
-                                    : Colors.white,
-                                child: Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Column(
-                                    children: [
-                                      Text(datesList[index].substring(8, 10),
-                                          style: kButtonBigTextStyle.copyWith(
-                                              color: selectedDate ==
-                                                      datesList[index]
-                                                  ? Colors.white
-                                                  : primaryBlueSoftenCustomColor)),
-                                      Text(
-                                        HelperClass.getMonthAbbreviation(
-                                          datesList[index].substring(5, 7),
-                                        ),
-                                        style: kSmallParaTextStyle.copyWith(
-                                            color:
-                                                selectedDate == datesList[index]
-                                                    ? Colors.white
-                                                    : Colors.black),
+              return SingleChildScrollView(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      // Date list
+                      Text(
+                        "Dates",
+                        style: kSubHeadingTextStyle,
+                      ),
+                      const SizedBox(
+                        height: 8,
+                      ),
+                      SizedBox(
+                        height: 70,
+                        child: ListView.builder(
+                          scrollDirection: Axis.horizontal,
+                          itemCount: datesList.length,
+                          itemBuilder: (context, index) {
+                            return Card(
+                              shape: ContinuousRectangleBorder(
+                                borderRadius: BorderRadius.circular(30),
+                                side: BorderSide(
+                                  color: softGrayStrokeCustomColor,
+                                  width: 2,
+                                ),
+                              ),
+                              child: SizedBox(
+                                width: 60,
+                                height: 60,
+                                child: GestureDetector(
+                                  onTap: () {
+                                    setState(() {
+                                      log("selected date = ${datesList[index]}");
+                                      selectedDate = datesList[index];
+                                    });
+                                  },
+                                  child: ClipPath(
+                                    clipper: const ShapeBorderClipper(
+                                      shape: ContinuousRectangleBorder(
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(30)),
                                       ),
-                                    ],
+                                    ),
+                                    child: Container(
+                                      color: selectedDate == datesList[index]
+                                          ? TealDarkCustomColor
+                                          : Colors.white,
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Column(
+                                          children: [
+                                            Text(
+                                                datesList[index]
+                                                    .substring(8, 10),
+                                                style: kButtonBigTextStyle.copyWith(
+                                                    color: selectedDate ==
+                                                            datesList[index]
+                                                        ? Colors.white
+                                                        : primaryBlueSoftenCustomColor)),
+                                            Text(
+                                              HelperClass.getMonthAbbreviation(
+                                                datesList[index]
+                                                    .substring(5, 7),
+                                              ),
+                                              style: kSmallParaTextStyle.copyWith(
+                                                  color: selectedDate ==
+                                                          datesList[index]
+                                                      ? Colors.white
+                                                      : primaryBlueSoftenCustomColor),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
                                   ),
                                 ),
                               ),
+                            );
+                          },
+                        ),
+                      ),
+                      SizedBox(height: MediaQuery.of(context).size.height / 20),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            "Upcomming Appointments",
+                            style: kSubHeadingTextStyle,
+                          ),
+                          GestureDetector(
+                            onTap: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          const ServicesListScreen()));
+                            },
+                            child: Row(
+                              children: [
+                                Text(
+                                  "View all",
+                                  style: kSmallParaTextStyle.copyWith(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 12),
+                                ),
+                                const SizedBox(
+                                  width: 8,
+                                ),
+                                const Icon(
+                                  Icons.arrow_forward_outlined,
+                                  size: 14,
+                                )
+                              ],
                             ),
                           ),
-                        );
-                      },
-                    ),
-                  ),
-                  const SizedBox(height: 16.0),
+                        ],
+                      ),
+                      SizedBox(height: MediaQuery.of(context).size.height / 60),
 
-                  ListView.builder(
-                    itemCount: appointments.length,
-                    shrinkWrap: true,
-                    itemBuilder: (context, index) {
-                      return ListTile(
-                        onTap: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => AppointmentDetailScreen(
-                                      appointmentModel: appointments[index])));
+                      ListView.builder(
+                        itemCount: appointments.length,
+                        shrinkWrap: true,
+                        physics: const NeverScrollableScrollPhysics(),
+                        itemBuilder: (context, index) {
+                          return GestureDetector(
+                            onTap: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          AppointmentDetailScreen(
+                                              appointmentModel:
+                                                  appointments[index])));
+                            },
+                            child: AdminCard(
+                                time: appointments[index].apptTime,
+                                text: appointments[index]
+                                    .apptTime
+                                    .substring(0, 2),
+                                name: appointments[index].username,
+                                service: appointments[index].petName),
+                          );
                         },
-                        leading: CircleAvatar(
-                          child: Text(
-                              appointments[index].apptTime.substring(0, 2)),
-                        ),
-                        title: Text(appointments[index].apptDate),
-                        trailing: Text(appointments[index].apptTime),
-                        subtitle: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(appointments[index].petName),
-                              Text(appointments[index].username),
-                              Text(appointments[index].apptStatus)
-                            ]),
-                      );
-                    },
-                  )
-                  // Appointments list
-                ],
+                      ),
+
+                      SizedBox(height: MediaQuery.of(context).size.height / 20),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            "Past Appointments",
+                            style: kSubHeadingTextStyle,
+                          ),
+                          GestureDetector(
+                            onTap: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          const ServicesListScreen()));
+                            },
+                            child: Row(
+                              children: [
+                                Text(
+                                  "View all",
+                                  style: kSmallParaTextStyle.copyWith(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 12),
+                                ),
+                                const SizedBox(
+                                  width: 8,
+                                ),
+                                const Icon(
+                                  Icons.arrow_forward_outlined,
+                                  size: 14,
+                                )
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                      SizedBox(height: MediaQuery.of(context).size.height / 60),
+
+                      ListView.builder(
+                        itemCount: appointments.length,
+                        shrinkWrap: true,
+                        physics: const NeverScrollableScrollPhysics(),
+                        itemBuilder: (context, index) {
+                          return GestureDetector(
+                            onTap: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          AppointmentDetailScreen(
+                                              appointmentModel:
+                                                  appointments[index])));
+                            },
+                            child: AdminCard(
+                                time: appointments[index].apptTime,
+                                text: appointments[index]
+                                    .apptTime
+                                    .substring(0, 2),
+                                name: appointments[index].username,
+                                service: appointments[index].petName),
+                          );
+                        },
+                      ),
+                      // Appointments list
+                    ],
+                  ),
+                ),
               );
             }
           },

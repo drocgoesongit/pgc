@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:pgc/constants/color_const.dart';
-import 'package:pgc/constants/color_const.dart';
 import 'package:pgc/constants/text_const.dart';
 
 class AppointmentCard extends StatelessWidget {
@@ -21,16 +20,15 @@ class AppointmentCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ClipPath(
-      clipper: ShapeBorderClipper(
-        shape: ContinuousRectangleBorder(
-            borderRadius: const BorderRadius.only(
-                bottomLeft: Radius.circular(30),
-                bottomRight: Radius.circular(30)),
-            side: BorderSide(
-              color: softGrayStrokeCustomColor,
-              width: 2,
-            )),
+    return Card(
+      surfaceTintColor: Colors.white,
+      elevation: 0,
+      shape: ContinuousRectangleBorder(
+        borderRadius: BorderRadius.circular(30),
+        side: BorderSide(
+          color: softGrayStrokeCustomColor,
+          width: 2,
+        ),
       ),
       child: Container(
         color: Colors.white,

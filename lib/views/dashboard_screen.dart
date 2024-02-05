@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pgc/admin_views/all_appointments_screen.dart';
 import 'package:pgc/components/appointment_rectangle_card.dart';
 import 'package:pgc/components/dashboard_card.dart';
 import 'package:pgc/constants/color_const.dart';
@@ -117,10 +118,18 @@ class Dashboard extends StatelessWidget {
                 ),
                 Row(
                   children: [
-                    Text(
-                      "View all",
-                      style: kSmallParaTextStyle.copyWith(
-                          fontWeight: FontWeight.bold, fontSize: 12),
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => AllAppointmentsScreen()));
+                      },
+                      child: Text(
+                        "View all",
+                        style: kSmallParaTextStyle.copyWith(
+                            fontWeight: FontWeight.bold, fontSize: 12),
+                      ),
                     ),
                     const SizedBox(
                       width: 8,

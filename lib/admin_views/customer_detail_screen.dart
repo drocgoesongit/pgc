@@ -3,21 +3,22 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:pgc/admin_views/all_customers_screen.dart';
 import 'package:pgc/components/appointment_rectangle_card.dart';
+import 'package:pgc/components/dashboard_card.dart';
 import 'package:pgc/constants/color_const.dart';
 import 'package:pgc/constants/text_const.dart';
-import 'package:pgc/model/appointment_model.dart';
-import 'package:pgc/viewmodels/appointment_viewmodel.dart';
+// import 'package:pgc/model/appointment_model.dart';
+// import 'package:pgc/viewmodels/appointment_viewmodel.dart';
 
-class AppointmentDetailScreen extends StatefulWidget {
-  const AppointmentDetailScreen({super.key, required this.appointmentModel});
-  final AppointmentModel appointmentModel;
+class CustomerDetailScreen extends StatefulWidget {
+  const CustomerDetailScreen({
+    super.key,
+  });
 
   @override
-  State<AppointmentDetailScreen> createState() =>
-      _AppointmentDetailScreenState();
+  State<CustomerDetailScreen> createState() => CustomerDetailScreenState();
 }
 
-class _AppointmentDetailScreenState extends State<AppointmentDetailScreen> {
+class CustomerDetailScreenState extends State<CustomerDetailScreen> {
   Future<String> getAppointmentDetails() async {
     try {
       return 'success';
@@ -30,7 +31,8 @@ class _AppointmentDetailScreenState extends State<AppointmentDetailScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(title: Text('Appointment', style: kSubHeadingTextStyle)),
+        appBar:
+            AppBar(title: Text('Customer detail', style: kSubHeadingTextStyle)),
         body: SingleChildScrollView(
           // scrollDirection: Axis.vertical,
           child: Column(children: [
@@ -205,30 +207,24 @@ class _AppointmentDetailScreenState extends State<AppointmentDetailScreen> {
                             SizedBox(
                                 height:
                                     MediaQuery.of(context).size.height / 20),
-                            Divider(
-                              thickness: 1,
-                              color: Colors.grey.shade300,
-                            ),
-                            SizedBox(
-                                height:
-                                    MediaQuery.of(context).size.height / 60),
-                            Text(
-                              "Customer Service",
-                              style: kSubHeadingTextStyle,
-                            ),
-                            SizedBox(
-                                height:
-                                    MediaQuery.of(context).size.height / 80),
-                            Text(
-                              "Fun and unique grooming styles, such as paw-dicures, temporary pet-safe fur coloring, and custom haircuts.",
-                              style: kSmallParaTextStyle.copyWith(fontSize: 12),
-                              maxLines: 3,
+                            const Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                CustomerDetailCard(
+                                    text: "Phone",
+                                    icon: Icons.call_rounded,
+                                    num: "+1 1234567890"),
+                                CustomerDetailCard(
+                                    text: "Mail",
+                                    icon: Icons.mail_rounded,
+                                    num: "janediop112@gmail.com"),
+                              ],
                             ),
                             SizedBox(
                                 height:
                                     MediaQuery.of(context).size.height / 40),
                             Text(
-                              "Customer's past appointment",
+                              "Past appointments",
                               style: kSubHeadingTextStyle,
                             ),
                             SizedBox(
@@ -256,182 +252,6 @@ class _AppointmentDetailScreenState extends State<AppointmentDetailScreen> {
                             SizedBox(
                                 height:
                                     MediaQuery.of(context).size.height / 10),
-
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              children: [
-                                OutlinedButton(
-                                  onPressed: () {
-                                    showDialog(
-                                      context: context,
-                                      builder: (context) {
-                                        return AlertDialog(
-                                          shape: ContinuousRectangleBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(40),
-                                          ),
-                                          surfaceTintColor: Colors.white,
-                                          title: Text(
-                                            'Cancel Appointment',
-                                            style: kMainTitleBoldTextStyle,
-                                          ),
-                                          content: Text(
-                                            'Are you sure you want to cancel the appointment?',
-                                            style: kSmallParaTextStyle,
-                                          ),
-                                          actions: [
-                                            OutlinedButton(
-                                              onPressed: () {
-                                                Navigator.pop(context);
-                                              },
-                                              style: ButtonStyle(
-                                                side: MaterialStateProperty.all<
-                                                    BorderSide>(
-                                                  BorderSide(
-                                                      color: Colors.red
-                                                          .withOpacity(0.3),
-                                                      width: 2),
-                                                ),
-                                                shape: MaterialStateProperty
-                                                    .all<OutlinedBorder>(
-                                                  ContinuousRectangleBorder(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            15.46),
-                                                  ),
-                                                ),
-                                                backgroundColor:
-                                                    MaterialStateProperty.all<
-                                                        Color>(Colors.white),
-                                              ),
-                                              child: Text(
-                                                'Cancel',
-                                                style: kSubHeadingTextStyle,
-                                              ),
-                                            ),
-                                            OutlinedButton(
-                                              onPressed: () async {
-                                                String status =
-                                                    await AppointmentViewModel()
-                                                        .cancelAppointment(
-                                                  widget.appointmentModel,
-                                                );
-                                                if (status == 'success') {
-                                                  Navigator.pop(context);
-                                                  ScaffoldMessenger.of(context)
-                                                      .showSnackBar(
-                                                    SnackBar(
-                                                      content: Text(
-                                                          'Appointment cancelled'),
-                                                    ),
-                                                  );
-                                                } else {
-                                                  ScaffoldMessenger.of(context)
-                                                      .showSnackBar(
-                                                    SnackBar(
-                                                      content: Text(
-                                                          'Error cancelling appointment'),
-                                                    ),
-                                                  );
-                                                }
-                                              },
-                                              style: ButtonStyle(
-                                                side: MaterialStateProperty.all<
-                                                    BorderSide>(
-                                                  BorderSide(
-                                                    color: Colors.green
-                                                        .withOpacity(0.3),
-                                                    width: 2,
-                                                  ),
-                                                ),
-                                                shape: MaterialStateProperty
-                                                    .all<OutlinedBorder>(
-                                                  ContinuousRectangleBorder(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            15.46),
-                                                  ),
-                                                ),
-                                                backgroundColor:
-                                                    MaterialStateProperty.all<
-                                                        Color>(Colors.white),
-                                              ),
-                                              child: Text(
-                                                'Yes',
-                                                style: kSubHeadingTextStyle,
-                                              ),
-                                            ),
-                                          ],
-                                        );
-                                      },
-                                    );
-                                  },
-                                  style: ButtonStyle(
-                                    side: MaterialStateProperty.all<BorderSide>(
-                                      BorderSide(
-                                          color: Colors.red.withOpacity(0.3),
-                                          width: 2),
-                                    ),
-                                    shape: MaterialStateProperty.all<
-                                        OutlinedBorder>(
-                                      ContinuousRectangleBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(15.46),
-                                      ),
-                                    ),
-                                  ),
-                                  child: Row(
-                                    children: [
-                                      Icon(
-                                        Icons.disabled_by_default_rounded,
-                                        size: 16,
-                                        color: Colors.red,
-                                      ),
-                                      SizedBox(
-                                        width: 4,
-                                      ),
-                                      Text(
-                                        'Cancel',
-                                        style: kSubHeadingTextStyle,
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                                OutlinedButton(
-                                  onPressed: () {},
-                                  style: ButtonStyle(
-                                    side: MaterialStateProperty.all<BorderSide>(
-                                      BorderSide(
-                                          color: Colors.green.withOpacity(0.3),
-                                          width: 2),
-                                    ),
-                                    shape: MaterialStateProperty.all<
-                                        OutlinedBorder>(
-                                      ContinuousRectangleBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(15.46),
-                                      ),
-                                    ),
-                                  ),
-                                  child: Row(
-                                    children: [
-                                      Icon(
-                                        Icons.check_box_rounded,
-                                        size: 16,
-                                        color: Colors.green,
-                                      ),
-                                      SizedBox(
-                                        width: 4,
-                                      ),
-                                      Text(
-                                        'Reschedule',
-                                        style: kSubHeadingTextStyle,
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ],
-                            )
                           ],
                         ),
                       );

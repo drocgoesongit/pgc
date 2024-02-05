@@ -1,5 +1,8 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:pgc/admin_views/all_appointments_screen.dart';
+import 'package:pgc/admin_views/all_customers_screen.dart';
+import 'package:pgc/constants/color_const.dart';
 import 'package:pgc/firebase_options.dart';
 import 'package:pgc/views/all_services_screen.dart';
 import 'package:pgc/views/appointment_screen.dart';
@@ -26,10 +29,10 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+        colorScheme: ColorScheme.fromSeed(seedColor: primaryBlueCustomColor),
         useMaterial3: true,
       ),
-      home: SplashScreen(),
+      home: HomeScreen(),
     );
   }
 }

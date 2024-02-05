@@ -29,37 +29,102 @@ class DashboardCard extends StatelessWidget {
         width: 100,
         child: Padding(
           padding: EdgeInsets.all(8.0),
-          child: Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Icon(
-                  icon,
-                  color: Colors.black,
-                  size: 24,
-                ),
-                SizedBox(
-                  height: MediaQuery.of(context).size.height / 40,
-                ),
-                // SizedBox(height: 4), // Adjust the spacing as needed
-                Text(
-                  text,
-                  style: kSmallParaTextStyle.copyWith(
-                      fontSize: 12, // Adjust the font size as needed
-                      fontWeight: FontWeight.w400,
-                      color: Colors.black),
-                  maxLines: 2,
-                ),
-                Text(
-                  num,
-                  style: kSmallParaTextStyle.copyWith(
-                      fontSize: 20, // Adjust the font size as needed
-                      fontWeight: FontWeight.w600,
-                      color: Colors.black),
-                  overflow: TextOverflow.ellipsis,
-                ),
-              ],
-            ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Icon(
+                icon,
+                color: Colors.black,
+                size: 24,
+              ),
+              SizedBox(
+                height: MediaQuery.of(context).size.height / 40,
+              ),
+              // SizedBox(height: 4), // Adjust the spacing as needed
+              Text(
+                text,
+                style: kSmallParaTextStyle.copyWith(
+                    fontSize: 12, // Adjust the font size as needed
+                    fontWeight: FontWeight.w400,
+                    color: Colors.black),
+                maxLines: 2,
+              ),
+              Text(
+                num,
+                style: kSmallParaTextStyle.copyWith(
+                    fontSize: 20, // Adjust the font size as needed
+                    fontWeight: FontWeight.w600,
+                    color: Colors.black),
+                overflow: TextOverflow.ellipsis,
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class CustomerDetailCard extends StatelessWidget {
+  final icon;
+  final String text;
+  final String num;
+
+  const CustomerDetailCard({
+    Key? key,
+    required this.text,
+    required this.icon,
+    required this.num,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      elevation: 0,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(15.46),
+        side: BorderSide(
+          color: softGrayStrokeCustomColor,
+          width: 2,
+        ),
+      ),
+      surfaceTintColor: Colors.white,
+      child: Container(
+        width: 160,
+        child: Padding(
+          padding: EdgeInsets.all(8.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Icon(
+                icon,
+                color: primaryBlueSoftenCustomColor,
+                size: 24,
+              ),
+              SizedBox(
+                height: MediaQuery.of(context).size.height / 60,
+              ),
+              // SizedBox(height: 4), // Adjust the spacing as needed
+              Text(
+                text,
+                style: kSmallParaTextStyle.copyWith(
+                    fontSize: 12, // Adjust the font size as needed
+                    fontWeight: FontWeight.w400,
+                    color: primaryBlueSoftenCustomColor),
+                maxLines: 2,
+              ),
+              SizedBox(
+                height: MediaQuery.of(context).size.height / 80,
+              ),
+              Text(
+                num,
+                style: kSmallParaTextStyle.copyWith(
+                    fontSize: 20, // Adjust the font size as needed
+                    fontWeight: FontWeight.w600,
+                    color: primaryBlueSoftenCustomColor),
+                overflow: TextOverflow.ellipsis,
+              ),
+            ],
           ),
         ),
       ),

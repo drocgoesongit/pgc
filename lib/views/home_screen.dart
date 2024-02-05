@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pgc/admin_views/add_new_service_screen.dart';
 import 'package:pgc/admin_views/all_appointments_screen.dart';
+import 'package:pgc/admin_views/customer_detail_screen.dart';
 import 'package:pgc/components/appointment_rectangle_card.dart';
 import 'package:pgc/components/review_card.dart';
 import 'package:pgc/components/service_square_card.dart';
@@ -8,6 +9,7 @@ import 'package:pgc/constants/color_const.dart';
 import 'package:pgc/constants/text_const.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:pgc/views/all_services_screen.dart';
+import 'package:pgc/views/dashboard_screen.dart';
 import 'package:pgc/views/profile_screen.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -61,8 +63,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                   Navigator.push(
                                       context,
                                       MaterialPageRoute(
-                                          builder: (context) =>
-                                              AllAppointmentsScreen()));
+                                          builder: (context) => Dashboard()));
                                 },
                                 child: Text(
                                   "Paws and Claws",

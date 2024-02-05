@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -57,50 +58,86 @@ class _ServicesDetailScreenState extends State<ServicesDetailScreen> {
       ),
       body: SingleChildScrollView(
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16.0),
+          padding: EdgeInsets.all(MediaQuery.of(context).size.width / 20),
           child: Column(
             crossAxisAlignment:
                 CrossAxisAlignment.start, // Align elements to the left
             children: [
-              ClipRRect(
-                borderRadius: BorderRadius.circular(
-                    8.0), // Add rounded corners to the image container
-                child: Container(
-                  height: MediaQuery.of(context).size.height / 4,
-                  width: double.infinity,
-                  child: Image.network(widget.serviceModel.servicePhotos[0],
-                      fit: BoxFit.cover),
-                ),
-              ),
-              const SizedBox(height: 16.0),
-              Padding(
-                padding: EdgeInsets.symmetric(
-                    horizontal: 8.0), // Add padding to the name and fees row
-                child: Row(
-                  children: [
-                    Expanded(
-                      child: Text(
-                        widget.serviceModel.serviceName,
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                        style: kMainTitleBoldTextStyle,
+              CarouselSlider(
+                items: widget.serviceModel.servicePhotos.map((imageUrl) {
+                  return Container(
+                    // margin: const EdgeInsets.all(8.0),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(15.0),
+                      image: DecorationImage(
+                        image: NetworkImage(imageUrl),
+                        fit: BoxFit.cover,
                       ),
                     ),
-                    Text(
-                      "\$ ${widget.serviceModel.serviceFees.toString()}",
-                      style: kMainTitleBoldTextStyle,
-                    ),
-                  ],
+                    width: MediaQuery.of(context).size.width,
+                    height: 200,
+                  );
+                }).toList(),
+                options: CarouselOptions(
+                  height: 200.0, // Adjust the height as needed
+                  aspectRatio: 16 / 9, // Adjust the aspect ratio as needed
+                  viewportFraction: 0.8,
+                  initialPage: 0,
+                  enableInfiniteScroll: true,
+                  reverse: false,
+                  autoPlay: true,
+                  autoPlayInterval: Duration(seconds: 3),
+                  autoPlayAnimationDuration: Duration(milliseconds: 800),
+                  autoPlayCurve: Curves.fastOutSlowIn,
+                  enlargeCenterPage: true,
+                  scrollDirection: Axis.horizontal,
                 ),
               ),
               const SizedBox(height: 16.0),
-              Text("Service Description", style: kSubHeadingTextStyle),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    widget.serviceModel.serviceName,
+                    style: kMainTitleBoldTextStyle.copyWith(
+                      color: Colors.black,
+                    ),
+                  ),
+                  Text(
+                    "\$ ${widget.serviceModel.serviceFees.toString()}",
+                    style: kMainTitleBoldTextStyle.copyWith(
+                      color: Colors.black,
+                    ),
+                  )
+                ],
+              ),
+              SizedBox(
+                height: MediaQuery.of(context).size.height / 40,
+              ),
+              Text(
+                "About service",
+                style:
+                    kSmallParaTextStyle.copyWith(fontWeight: FontWeight.w600),
+              ),
+              SizedBox(
+                height: MediaQuery.of(context).size.height / 80,
+              ),
               Text(
                 widget.serviceModel.serviceDescription,
+                style: kSmallParaTextStyle.copyWith(
+                    fontSize: 14,
+                    fontWeight: FontWeight.w500,
+                    color: Colors.black),
                 maxLines: 3,
                 overflow: TextOverflow.ellipsis,
-                style: kSmallParaTextStyle,
               ),
+              // Text("Service Description", style: kSubHeadingTextStyle),
+              // Text(2
+              //   widget.serviceModel.serviceDescription,
+              //   maxLines: 3,
+              //   overflow: TextOverflow.ellipsis,
+              //   style: kSmallParaTextStyle,
+              // ),
               const SizedBox(height: 16.0),
               FutureBuilder(
                   future: getDates(selectedDate),

@@ -1,12 +1,44 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:pgc/admin_views/all_appointments_screen.dart';
 import 'package:pgc/components/appointment_rectangle_card.dart';
 import 'package:pgc/components/dashboard_card.dart';
 import 'package:pgc/constants/color_const.dart';
 import 'package:pgc/constants/text_const.dart';
+import 'package:pgc/model/appointment_model.dart';
+import 'package:pgc/viewmodels/analytics_viewmodel.dart';
 
 class Dashboard extends StatelessWidget {
-  const Dashboard({super.key});
+  Dashboard({super.key});
+
+  int appointmentRemaining = 0;
+  int todayAppointment = 0;
+  int totalNumberOfCustomers = 0;
+
+  Future<String> getAnalyticsData() async {
+    try {
+      // appointmentRemaining =
+      // await AnalyticsViewModel().getRemainingTodaysAppointment();
+      todayAppointment = await AnalyticsViewModel().getNumberOfAppointments();
+      totalNumberOfCustomers = await AnalyticsViewModel().getNumberOfUsers();
+      return "success";
+    } catch (e) {
+      log(e.toString());
+      return "error";
+    }
+  }
+
+  Future<List<AppointmentModel>> getUpcomingAppointments() async {
+    try {
+      List<AppointmentModel> appointments = [];
+      await Future.delayed(Duration(seconds: 2));
+      return appointments;
+    } catch (e) {
+      log(e.toString());
+      return [];
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -29,28 +61,39 @@ class Dashboard extends StatelessWidget {
         padding: EdgeInsets.all(MediaQuery.of(context).size.width / 20),
         child: Column(
           children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                const DashboardCard(
-                    text: "Appointments remaining",
-                    icon: Icons.calendar_month_rounded,
-                    num: "20"),
-                SizedBox(
-                  width: MediaQuery.of(context).size.width / 60,
-                ),
-                const DashboardCard(
-                    text: "Today's Appointment",
-                    icon: Icons.description_rounded,
-                    num: "12"),
-                SizedBox(
-                  width: MediaQuery.of(context).size.width / 60,
-                ),
-                const DashboardCard(
-                    text: "Today's Revenue",
-                    icon: Icons.insert_chart_rounded,
-                    num: "\$12,546"),
-              ],
+            FutureBuilder(
+              future: getAnalyticsData(),
+              builder: (BuildContext context, AsyncSnapshot snapshot) {
+                if (snapshot.hasData && snapshot.data == "success") {
+                  return Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      DashboardCard(
+                        icon: Icons.calendar_today_rounded,
+                        text: "Appointments Remaining",
+                        value: appointmentRemaining.toString(),
+                      ),
+                      DashboardCard(
+                        icon: Icons.calendar_today_rounded,
+                        text: "Today's Appointments",
+                        value: todayAppointment.toString(),
+                      ),
+                      DashboardCard(
+                        icon: Icons.person,
+                        text: "Total Number of Customers",
+                        value: totalNumberOfCustomers.toString(),
+                      ),
+                    ],
+                  );
+                } else if (snapshot.hasData && snapshot.data == "error") {
+                  return const Center(child: Text("Error while fetching data"));
+                } else if (snapshot.connectionState ==
+                    ConnectionState.waiting) {
+                  return const Center(child: CircularProgressIndicator());
+                } else {
+                  return const Center(child: Text("Error while fetching data"));
+                }
+              },
             ),
             SizedBox(
               height: MediaQuery.of(context).size.height / 40,

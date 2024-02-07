@@ -1,15 +1,12 @@
 // ignore_for_file: use_build_context_synchronously
 
 import 'dart:developer';
-
 import 'package:carousel_slider/carousel_slider.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:pgc/components/schedule_card.dart';
 import 'package:pgc/components/single_info_alert_box.dart';
 import 'package:pgc/constants/color_const.dart';
-import 'package:pgc/constants/const.dart';
 import 'package:pgc/constants/helper_class.dart';
 import 'package:pgc/constants/text_const.dart';
 import 'package:pgc/model/hour_slot_model.dart';

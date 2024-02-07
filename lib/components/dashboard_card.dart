@@ -5,13 +5,13 @@ import 'package:pgc/constants/text_const.dart';
 class DashboardCard extends StatelessWidget {
   final icon;
   final String text;
-  final String num;
+  final String value;
 
   const DashboardCard({
     Key? key,
     required this.text,
     required this.icon,
-    required this.num,
+    required this.value,
   }) : super(key: key);
 
   @override
@@ -50,7 +50,7 @@ class DashboardCard extends StatelessWidget {
                 maxLines: 2,
               ),
               Text(
-                num,
+                value,
                 style: kSmallParaTextStyle.copyWith(
                     fontSize: 20, // Adjust the font size as needed
                     fontWeight: FontWeight.w600,

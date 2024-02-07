@@ -10,4 +10,7 @@ class Constants {
   static const String appointmentCompleted = 'completed';
   static const String appointmentFeesPending = 'pending';
   static const String appointmentFeesPaid = 'paid';
+  static const String fcChatNode = 'chats';
+  static const String fcMessagesNode = 'messages';
+  static const String fcAdmins = 'admins';
 }

@@ -32,7 +32,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: primaryBlueCustomColor),
         useMaterial3: true,
       ),
-      home: AllAppointmentsScreen(),
+      home: HomeScreen(),
     );
   }
 }

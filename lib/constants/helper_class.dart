@@ -264,4 +264,14 @@ class HelperClass {
     }
     return formattedHour;
   }
+
+  static String formatTimestampToAmPm(int timestamp) {
+    DateTime dateTime = DateTime.fromMillisecondsSinceEpoch(timestamp);
+    String period = dateTime.hour >= 12 ? 'pm' : 'am';
+    int hourIn12HourFormat =
+        dateTime.hour > 12 ? dateTime.hour - 12 : dateTime.hour;
+    String formattedTime =
+        '${hourIn12HourFormat.toString().padLeft(2, '0')}:${dateTime.minute.toString().padLeft(2, '0')} $period';
+    return formattedTime;
+  }
 }

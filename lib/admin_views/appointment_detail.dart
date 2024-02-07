@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:pgc/admin_views/all_customers_screen.dart';
+import 'package:pgc/admin_views/reschedule_appointment.dart';
 import 'package:pgc/components/appointment_rectangle_card.dart';
 import 'package:pgc/constants/color_const.dart';
 import 'package:pgc/constants/text_const.dart';
@@ -68,7 +69,7 @@ class _AppointmentDetailScreenState extends State<AppointmentDetailScreen> {
                                                     AllCustomer()));
                                       },
                                       child: Text(
-                                        "Jane D.",
+                                        widget.appointmentModel.username,
                                         style: kMainTitleBoldTextStyle,
                                       ),
                                     ),
@@ -80,7 +81,7 @@ class _AppointmentDetailScreenState extends State<AppointmentDetailScreen> {
                                               fontWeight: FontWeight.w500),
                                         ),
                                         Text(
-                                          "Bella",
+                                          widget.appointmentModel.petName,
                                           style: kSmallParaTextStyle.copyWith(
                                               fontWeight: FontWeight.bold),
                                         ),
@@ -106,12 +107,12 @@ class _AppointmentDetailScreenState extends State<AppointmentDetailScreen> {
                                               .start, // Align texts to the right
                                           children: [
                                             Text(
-                                              "Today",
+                                              widget.appointmentModel.apptDate,
                                               style: kSmallParaTextStyle
                                                   .copyWith(fontSize: 14),
                                             ),
                                             Text(
-                                              "12:00 am",
+                                              widget.appointmentModel.apptTime,
                                               style: kSmallParaTextStyle
                                                   .copyWith(fontSize: 14),
                                             ),
@@ -243,20 +244,9 @@ class _AppointmentDetailScreenState extends State<AppointmentDetailScreen> {
                             SizedBox(
                                 height:
                                     MediaQuery.of(context).size.height / 80),
-                            // Text('Name: ${widget.appointmentModel.userId}'),
-                            // Text(
-                            //     'Phone: ${widget.appointmentModel.feesStatus}'),
-                            // Text('Email: ${widget.appointmentModel.userId}'),
-                            // Text('Date: ${widget.appointmentModel.apptDate}'),
-                            // Text('Time: ${widget.appointmentModel.apptTime}'),
-                            // Text(
-                            //     'Service: ${widget.appointmentModel.serviceId}'),
-                            // Text(
-                            //     'Status: ${widget.appointmentModel.feesStatus}'),
-                            // SizedBox(
-                            //     height:
-                            //         MediaQuery.of(context).size.height / 10),
-
+                            SizedBox(
+                                height:
+                                    MediaQuery.of(context).size.height / 10),
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               children: [
@@ -398,7 +388,15 @@ class _AppointmentDetailScreenState extends State<AppointmentDetailScreen> {
                                   ),
                                 ),
                                 OutlinedButton(
-                                  onPressed: () {},
+                                  onPressed: () {
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                AppointmentRescheduleScreen(
+                                                    appointmentModel: widget
+                                                        .appointmentModel)));
+                                  },
                                   style: ButtonStyle(
                                     side: MaterialStateProperty.all<BorderSide>(
                                       BorderSide(

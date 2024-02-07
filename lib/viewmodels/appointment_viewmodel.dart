@@ -88,4 +88,41 @@ class AppointmentViewModel {
       return 'error';
     }
   }
+
+  Future<String> rescheduleAppointment(AppointmentModel prevAppointmentModel,
+      String newDate, String newTime) async {
+    try {
+      await _firestore
+          .collection(Constants.fcAvailability)
+          .doc(prevAppointmentModel.serviceId)
+          .collection(Constants.fcDates)
+          .doc(prevAppointmentModel.apptDate)
+          .update({
+        HelperClass.reformatHourToModelType(prevAppointmentModel.apptTime):
+            FieldValue.arrayRemove([prevAppointmentModel.apptId])
+      });
+
+      await _firestore
+          .collection(Constants.fcAppointments)
+          .doc(prevAppointmentModel.apptId)
+          .update({
+        'apptDate': newDate,
+        'apptTime': newTime,
+        'timeOfBooking': DateTime.now().millisecondsSinceEpoch
+      });
+      await _firestore
+          .collection(Constants.fcAvailability)
+          .doc(prevAppointmentModel.serviceId)
+          .collection(Constants.fcDates)
+          .doc(newDate)
+          .update({
+        HelperClass.reformatHourToModelType(newTime):
+            FieldValue.arrayUnion([prevAppointmentModel.apptId])
+      });
+      return "success";
+    } catch (e) {
+      log(e.toString());
+      return "error";
+    }
+  }
 }

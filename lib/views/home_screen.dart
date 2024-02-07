@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:pgc/admin_views/add_new_service_screen.dart';
 import 'package:pgc/admin_views/all_appointments_screen.dart';
@@ -8,9 +9,12 @@ import 'package:pgc/components/service_square_card.dart';
 import 'package:pgc/constants/color_const.dart';
 import 'package:pgc/constants/text_const.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'package:pgc/viewmodels/chat_viewmodel.dart';
 import 'package:pgc/views/all_services_screen.dart';
 import 'package:pgc/views/dashboard_screen.dart';
+import 'package:pgc/views/chat_screen.dart';
 import 'package:pgc/views/profile_screen.dart';
+import 'package:pgc/views/sign_in_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -98,10 +102,75 @@ class _HomeScreenState extends State<HomeScreen> {
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: [
-                              Text(
-                                "Elevate Your\nPet Style!",
-                                style: kMainTitleBoldTextStyle.copyWith(
-                                    color: Colors.white),
+                              GestureDetector(
+                                onTap: () async {
+                                  if (FirebaseAuth.instance.currentUser !=
+                                      null) {
+                                    showDialog(
+                                        context: context,
+                                        barrierDismissible: false,
+                                        builder: (BuildContext context) {
+                                          return AlertDialog(
+                                            content: Center(
+                                                child:
+                                                    CircularProgressIndicator(
+                                              color: primaryBlueCustomColor,
+                                              strokeWidth: 2.0,
+                                            )),
+                                          );
+                                        });
+                                    String userId =
+                                        FirebaseAuth.instance.currentUser!.uid;
+                                    String isChatAvailable =
+                                        await ChatViewModel().getChat();
+
+                                    if (isChatAvailable == 'success') {
+                                      Navigator.pop(context);
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  ChatDetailScreen(
+                                                    chatPlusUserId: userId,
+                                                  )));
+                                    } else {
+                                      Navigator.pop(context);
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(
+                                        const SnackBar(
+                                          content:
+                                              Text('Error: Chat not available'),
+                                        ),
+                                      );
+                                    }
+                                  } else {
+                                    showDialog(
+                                        context: context,
+                                        builder: (context) => AlertDialog(
+                                              title: const Text("Error"),
+                                              content: const Text(
+                                                  "You need to be logged in to access this feature."),
+                                              actions: [
+                                                TextButton(
+                                                  onPressed: () {
+                                                    Navigator.pop(context);
+                                                    Navigator.push(
+                                                        context,
+                                                        MaterialPageRoute(
+                                                            builder: (context) =>
+                                                                const SigninScreen()));
+                                                  },
+                                                  child: Text("OK"),
+                                                )
+                                              ],
+                                            ));
+                                  }
+                                },
+                                child: Text(
+                                  "Elevate Your\nPet Style!",
+                                  style: kMainTitleBoldTextStyle.copyWith(
+                                      color: Colors.white),
+                                ),
                               ),
                               Center(
                                 child: Container(

@@ -35,21 +35,21 @@ class AllCustomer extends StatelessWidget {
                 const DashboardCard(
                     text: "Appointments remaining",
                     icon: Icons.calendar_month_rounded,
-                    num: "20"),
+                    value: "20"),
                 SizedBox(
                   width: MediaQuery.of(context).size.width / 60,
                 ),
                 const DashboardCard(
                     text: "Today's Appointment",
                     icon: Icons.description_rounded,
-                    num: "12"),
+                    value: "12"),
                 SizedBox(
                   width: MediaQuery.of(context).size.width / 60,
                 ),
                 const DashboardCard(
                     text: "Today's Revenue",
                     icon: Icons.insert_chart_rounded,
-                    num: "\$12,546"),
+                    value: "\$12,546"),
               ],
             ),
             SizedBox(

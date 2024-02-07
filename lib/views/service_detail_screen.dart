@@ -1,9 +1,12 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'dart:developer';
 
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:pgc/components/schedule_card.dart';
 import 'package:pgc/components/single_info_alert_box.dart';
 import 'package:pgc/constants/color_const.dart';
 import 'package:pgc/constants/const.dart';
@@ -158,58 +161,72 @@ class _ServicesDetailScreenState extends State<ServicesDetailScreen> {
                           const SizedBox(
                             height: 8,
                           ),
-                          Container(
-                            height: 100,
+                          SizedBox(
+                            height: 70,
                             child: ListView.builder(
                               scrollDirection: Axis.horizontal,
                               itemCount: datesList.length,
                               itemBuilder: (context, index) {
-                                return ClipPath(
-                                  clipper: ShapeBorderClipper(
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(16),
+                                return Card(
+                                  shape: ContinuousRectangleBorder(
+                                    borderRadius: BorderRadius.circular(30),
+                                    side: BorderSide(
+                                      color: softGrayStrokeCustomColor,
+                                      width: 2,
                                     ),
                                   ),
-                                  child: Container(
-                                    width: 80,
+                                  child: SizedBox(
+                                    width: 60,
+                                    height: 60,
                                     child: GestureDetector(
                                       onTap: () {
                                         setState(() {
+                                          log("selected date = ${datesList[index]}");
                                           selectedDate = datesList[index];
                                         });
                                       },
-                                      child: Container(
-                                        color: selectedDate == datesList[index]
-                                            ? primaryBlueSoftenCustomColor
-                                            : Colors.white,
-                                        child: Padding(
-                                          padding: const EdgeInsets.all(8.0),
-                                          child: Column(
-                                            children: [
-                                              Text(
-                                                  datesList[index]
-                                                      .substring(8, 10),
-                                                  style: kButtonBigTextStyle
+                                      child: ClipPath(
+                                        clipper: const ShapeBorderClipper(
+                                          shape: ContinuousRectangleBorder(
+                                            borderRadius: BorderRadius.all(
+                                                Radius.circular(30)),
+                                          ),
+                                        ),
+                                        child: Container(
+                                          color:
+                                              selectedDate == datesList[index]
+                                                  ? TealDarkCustomColor
+                                                  : Colors.white,
+                                          child: Padding(
+                                            padding: const EdgeInsets.all(8.0),
+                                            child: Column(
+                                              children: [
+                                                Text(
+                                                    datesList[index]
+                                                        .substring(8, 10),
+                                                    style: kButtonBigTextStyle
+                                                        .copyWith(
+                                                            color: selectedDate ==
+                                                                    datesList[
+                                                                        index]
+                                                                ? Colors.white
+                                                                : primaryBlueSoftenCustomColor)),
+                                                Text(
+                                                  HelperClass
+                                                      .getMonthAbbreviation(
+                                                    datesList[index]
+                                                        .substring(5, 7),
+                                                  ),
+                                                  style: kSmallParaTextStyle
                                                       .copyWith(
                                                           color: selectedDate ==
                                                                   datesList[
                                                                       index]
                                                               ? Colors.white
-                                                              : primaryBlueSoftenCustomColor)),
-                                              Text(
-                                                HelperClass
-                                                    .getMonthAbbreviation(
-                                                  datesList[index]
-                                                      .substring(5, 7),
+                                                              : primaryBlueSoftenCustomColor),
                                                 ),
-                                                style: kSmallParaTextStyle
-                                                    .copyWith(
-                                                        color: selectedDate ==
-                                                                datesList[index]
-                                                            ? Colors.white
-                                                            : Colors.black),
-                                              ),
-                                            ],
+                                              ],
+                                            ),
                                           ),
                                         ),
                                       ),
@@ -232,6 +249,8 @@ class _ServicesDetailScreenState extends State<ServicesDetailScreen> {
                             physics: const NeverScrollableScrollPhysics(),
                             crossAxisCount: 4,
                             childAspectRatio: 2,
+                            crossAxisSpacing: 4,
+                            mainAxisSpacing: 4,
                             children: List.generate(24, (index) {
                               SingleSlotModel singleSlotModel = HelperClass()
                                   .getHourModel(avaialabilityModel, index);
@@ -244,66 +263,142 @@ class _ServicesDetailScreenState extends State<ServicesDetailScreen> {
                                     if (FirebaseAuth.instance.currentUser !=
                                         null) {
                                       showDialog(
-                                          context: context,
-                                          builder: (context) {
-                                            return SingleInfoAlertBox(
-                                              text:
-                                                  "Are you sure you want to book this slot?",
-                                              onOkPressed: () async {
-                                                log("User is logged in.");
-                                                log("booking for date: $selectedDate, time: ${singleSlotModel.hour}");
+                                        context: context,
+                                        builder: (context) {
+                                          return AlertDialog(
+                                            shape: ContinuousRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(40),
+                                            ),
+                                            surfaceTintColor:
+                                                Colors.transparent,
+                                            title: Text(
+                                              "Are you sure you want to book this slot?",
+                                              style: kSubHeadingTextStyle,
+                                            ),
+                                            actions: [
+                                              TextButton(
+                                                onPressed: () async {
+                                                  log("User is logged in.");
+                                                  log("booking for date: $selectedDate, time: ${singleSlotModel.hour}");
 
-                                                String result =
-                                                    await AppointmentViewModel()
-                                                        .bookAppointment(
-                                                  widget.serviceId,
-                                                  selectedDate,
-                                                  singleSlotModel.hour,
-                                                  FirebaseAuth.instance
-                                                      .currentUser!.uid,
-                                                  "petId",
-                                                  selectedDate,
-                                                );
+                                                  String result =
+                                                      await AppointmentViewModel()
+                                                          .bookAppointment(
+                                                    widget.serviceId,
+                                                    selectedDate,
+                                                    singleSlotModel.hour,
+                                                    FirebaseAuth.instance
+                                                        .currentUser!.uid,
+                                                    "petId",
+                                                    selectedDate,
+                                                  );
 
-                                                if (result == "success") {
-                                                  // ignore: use_build_context_synchronously
-                                                  showDialog(
+                                                  if (result == "success") {
+                                                    Navigator.pop(
+                                                        context); // Dismiss the current dialog
+                                                    showDialog(
                                                       context: context,
                                                       builder: (context) {
-                                                        return SingleInfoAlertBox(
-                                                          text:
+                                                        return AlertDialog(
+                                                          shape:
+                                                              ContinuousRectangleBorder(
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        40),
+                                                          ),
+                                                          surfaceTintColor:
+                                                              Colors
+                                                                  .transparent,
+                                                          title: Text(
                                                               "Appointment booked",
-                                                          onOkPressed: () {
-                                                            Navigator.pop(
-                                                                context);
-
-                                                            Navigator.push(
-                                                                context,
-                                                                MaterialPageRoute(
+                                                              style:
+                                                                  kSubHeadingTextStyle),
+                                                          actions: [
+                                                            TextButton(
+                                                              onPressed: () {
+                                                                Navigator.pop(
+                                                                    context); // Dismiss the success dialog
+                                                                Navigator.push(
+                                                                  context,
+                                                                  MaterialPageRoute(
                                                                     builder:
                                                                         (context) =>
-                                                                            HomeScreen()));
-                                                          },
+                                                                            HomeScreen(),
+                                                                  ),
+                                                                );
+                                                              },
+                                                              child: Text(
+                                                                "OK",
+                                                                style:
+                                                                    kSubHeadingTextStyle
+                                                                        .copyWith(
+                                                                  color: const Color(
+                                                                      0xFF877FFA),
+                                                                ),
+                                                              ),
+                                                            ),
+                                                          ],
                                                         );
-                                                      });
-                                                } else {
-                                                  // ignore: use_build_context_synchronously
-                                                  showDialog(
+                                                      },
+                                                    );
+                                                  } else {
+                                                    Navigator.pop(
+                                                        context); // Dismiss the current dialog
+                                                    showDialog(
                                                       context: context,
                                                       builder: (context) {
-                                                        return SingleInfoAlertBox(
-                                                          text:
+                                                        return AlertDialog(
+                                                          shape:
+                                                              ContinuousRectangleBorder(
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        40),
+                                                          ),
+                                                          surfaceTintColor:
+                                                              Colors
+                                                                  .transparent,
+                                                          title: Text(
                                                               "Error in booking",
-                                                          onOkPressed: () {
-                                                            Navigator.pop(
-                                                                context);
-                                                          },
+                                                              style:
+                                                                  kSubHeadingTextStyle),
+                                                          actions: [
+                                                            TextButton(
+                                                              onPressed: () {
+                                                                Navigator.pop(
+                                                                    context); // Dismiss the error dialog
+                                                              },
+                                                              child: Text(
+                                                                "OK",
+                                                                style:
+                                                                    kSubHeadingTextStyle
+                                                                        .copyWith(
+                                                                  color: const Color(
+                                                                      0xFF877FFA),
+                                                                ),
+                                                              ),
+                                                            ),
+                                                          ],
                                                         );
-                                                      });
-                                                }
-                                              },
-                                            );
-                                          });
+                                                      },
+                                                    );
+                                                  }
+                                                },
+                                                child: Text(
+                                                  "OK",
+                                                  style: kSubHeadingTextStyle
+                                                      .copyWith(
+                                                    color:
+                                                        const Color(0xFF877FFA),
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
+                                          );
+                                        },
+                                      );
                                     } else {
                                       showDialog(
                                           context: context,
@@ -323,41 +418,138 @@ class _ServicesDetailScreenState extends State<ServicesDetailScreen> {
                                     }
                                   } else {
                                     showDialog(
-                                        context: context,
-                                        builder: (context) {
-                                          return SingleInfoAlertBox(
-                                            text: "Slot is not available",
-                                            onOkPressed: () {
-                                              Navigator.pop(context);
-                                            },
-                                          );
-                                        });
+                                      context: context,
+                                      builder: (context) {
+                                        return AlertDialog(
+                                          shape: ContinuousRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(40),
+                                          ),
+                                          surfaceTintColor: Colors.transparent,
+                                          title: Text(
+                                            "Slot is not available",
+                                            style: kSubHeadingTextStyle,
+                                          ),
+                                          actions: [
+                                            TextButton(
+                                              onPressed: () {
+                                                Navigator.pop(context);
+                                              },
+                                              child: Text(
+                                                "OK",
+                                                style: kSubHeadingTextStyle
+                                                    .copyWith(
+                                                  color:
+                                                      const Color(0xFF877FFA),
+                                                ),
+                                              ),
+                                            ),
+                                          ],
+                                        );
+                                      },
+                                    );
                                   }
                                 },
-                                child: Container(
-                                  decoration: BoxDecoration(
-                                    border: Border.all(
-                                      color: isSlotAvailable
-                                          ? Colors.grey
-                                          : Colors.red, // Use suitable colors
-                                      width: 1,
+                                child: ClipPath(
+                                  clipper: const ShapeBorderClipper(
+                                    shape: ContinuousRectangleBorder(
+                                      borderRadius:
+                                          BorderRadius.all(Radius.circular(30)),
                                     ),
-                                    color: isSlotAvailable
-                                        ? Colors.green
-                                        : Colors.red, // Use suitable colors
                                   ),
-                                  child: Center(
-                                    child: Text(
-                                      singleSlotModel.hour,
-                                      style: TextStyle(
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.bold,
+                                  child: Container(
+                                    width: 75,
+                                    height: 35,
+                                    decoration: BoxDecoration(
+                                      // borderRadius: BorderRadius.circular(15.46),
+                                      border: Border.all(
+                                        color: isSlotAvailable
+                                            ? TealLightCustomColor
+                                            : Colors.redAccent,
+                                        width: 2,
                                       ),
+                                      color: isSlotAvailable
+                                          ? TealLightCustomColor
+                                          : Colors.redAccent,
+                                    ),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        Text(
+                                          singleSlotModel.hour,
+                                          style: kSmallParaTextStyle.copyWith(
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 12,
+                                            color: isSlotAvailable
+                                                ? Colors.black
+                                                : Colors.white,
+                                          ),
+                                        ),
+                                      ],
                                     ),
                                   ),
                                 ),
                               );
                             }),
+                          ),
+                          SizedBox(
+                            height: MediaQuery.of(context).size.height / 60,
+                          ),
+                          Row(
+                            children: [
+                              Row(
+                                children: [
+                                  Container(
+                                    width: 12,
+                                    height: 12,
+                                    decoration: BoxDecoration(
+                                        border: Border.all(
+                                          color: Colors.black,
+                                          width: 0.5,
+                                        ),
+                                        color: Colors.redAccent,
+                                        borderRadius: BorderRadius.circular(2)),
+                                  ),
+                                  SizedBox(
+                                    width: 8,
+                                  ),
+                                  Text(
+                                    "Booked",
+                                    style: kSmallParaTextStyle.copyWith(
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.w400),
+                                  ),
+                                ],
+                              ),
+                              SizedBox(
+                                width: 8,
+                              ),
+                              Row(
+                                children: [
+                                  Container(
+                                    width: 12,
+                                    height: 12,
+                                    decoration: BoxDecoration(
+                                        border: Border.all(
+                                          color: Colors.black,
+                                          width: 0.5,
+                                        ),
+                                        color: TealLightCustomColor,
+                                        borderRadius: BorderRadius.circular(2)),
+                                  ),
+                                  SizedBox(
+                                    width: 8,
+                                  ),
+                                  Text(
+                                    "Available",
+                                    style: kSmallParaTextStyle.copyWith(
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.w400),
+                                  ),
+                                ],
+                              ),
+                            ],
                           ),
                           const SizedBox(height: 16.0),
                           Container(

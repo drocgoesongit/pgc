@@ -253,9 +253,9 @@ class _AppointmentDetailScreenState extends State<AppointmentDetailScreen> {
                             //     'Service: ${widget.appointmentModel.serviceId}'),
                             // Text(
                             //     'Status: ${widget.appointmentModel.feesStatus}'),
-                            SizedBox(
-                                height:
-                                    MediaQuery.of(context).size.height / 10),
+                            // SizedBox(
+                            //     height:
+                            //         MediaQuery.of(context).size.height / 10),
 
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,

@@ -58,64 +58,45 @@ class _ScheduleCardState extends State<ScheduleCard> {
   }
 }
 
-class VisitHours extends StatefulWidget {
-  final String date;
-  final String abr;
-  const VisitHours({super.key, required this.date, required this.abr});
+// class VisitHours extends StatefulWidget {
+//   final String date;
+//   const VisitHours({super.key, required this.date});
 
-  @override
-  State<VisitHours> createState() => _VisitHoursState();
-}
+//   @override
+//   State<VisitHours> createState() => _VisitHoursState();
+// }
 
-class _VisitHoursState extends State<VisitHours> {
-  bool isTapped = false;
-  @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () {
-        setState(() {
-          isTapped = !isTapped;
-        });
-      },
-      child: Container(
-          // padding: EdgeInsets.only(left: 8.0),
-          width: 75,
-          height: 35,
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(15.46),
-            border: Border.all(
-              color: softGrayStrokeCustomColor,
-              width: 2,
-            ),
-            color: isTapped ? primaryBlueCustomColor : Colors.transparent,
-          ),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text(
-                widget.date,
-                style: kSmallParaTextStyle.copyWith(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 12,
-                  color: isTapped ? Colors.white : primaryBlueSoftenCustomColor,
-                ),
-              ),
-              SizedBox(
-                width: 2,
-              ),
-              Text(
-                widget.abr,
-                style: kSmallParaTextStyle.copyWith(
-                  fontSize: 12,
-                  fontWeight: FontWeight.bold,
-                  color: isTapped ? Colors.white : primaryBlueSoftenCustomColor,
-                ),
-              ),
-            ],
-          )),
-    );
-  }
-}
+// class _VisitHoursState extends State<VisitHours> {
+//   bool isTapped = false;
+//   @override
+//   Widget build(BuildContext context) {
+//     return Container(
+//         // padding: EdgeInsets.only(left: 8.0),
+//         width: 75,
+//         height: 35,
+//         decoration: BoxDecoration(
+//           borderRadius: BorderRadius.circular(15.46),
+//           border: Border.all(
+//             color: softGrayStrokeCustomColor,
+//             width: 2,
+//           ),
+//           color: isTapped ? primaryBlueCustomColor : Colors.transparent,
+//         ),
+//         child: Row(
+//           mainAxisAlignment: MainAxisAlignment.center,
+//           children: [
+//             Text(
+//               widget.date,
+//               style: kSmallParaTextStyle.copyWith(
+//                 fontWeight: FontWeight.bold,
+//                 fontSize: 12,
+//                 color: isTapped ? Colors.white : primaryBlueSoftenCustomColor,
+//               ),
+//             ),
+//           ],
+//         ));
+//   }
+// }
 
 
 // Example usage:

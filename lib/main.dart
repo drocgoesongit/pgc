@@ -6,7 +6,6 @@ import 'package:pgc/admin_views/appointment_detail.dart';
 import 'package:pgc/constants/color_const.dart';
 import 'package:pgc/firebase_options.dart';
 import 'package:pgc/views/all_services_screen.dart';
-import 'package:pgc/views/appointment_screen.dart';
 import 'package:pgc/views/dashboard_screen.dart';
 import 'package:pgc/views/home_screen.dart';
 import 'package:pgc/views/service_detail_screen.dart';

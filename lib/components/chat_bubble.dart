@@ -23,9 +23,13 @@ class ChatBubble extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [
               ClipPath(
-                clipper: const ShapeBorderClipper(
+                clipper: ShapeBorderClipper(
                   shape: ContinuousRectangleBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(15)),
+                    borderRadius: BorderRadius.all(Radius.circular(30)),
+                    side: messageModel.sender == Constants.fcAdmins
+                        ? BorderSide(
+                            color: primaryBlueSoftenCustomColor, width: 2)
+                        : BorderSide.none,
                   ),
                 ),
                 child: Container(
@@ -34,17 +38,18 @@ class ChatBubble extends StatelessWidget {
                         0.7, // Limit bubble width
                   ),
                   padding: EdgeInsets.all(10),
-                  margin: EdgeInsets.symmetric(vertical: 4),
                   decoration: BoxDecoration(
                     color: messageModel.sender == Constants.fcAdmins
-                        ? Colors.grey[300]
+                        ? softWhiteCustomColor
                         : primaryBlueSoftenCustomColor,
-                    borderRadius: BorderRadius.circular(10),
                   ),
                   child: Text(
                     messageModel.content,
                     style: kSmallParaTextStyle.copyWith(
-                        fontWeight: FontWeight.w600, color: Colors.white),
+                        fontWeight: FontWeight.w600,
+                        color: messageModel.sender == Constants.fcAdmins
+                            ? primaryBlueSoftenCustomColor
+                            : softWhiteCustomColor),
                     maxLines: 4,
                     overflow: TextOverflow.ellipsis,
                   ),

@@ -99,39 +99,31 @@ class Dashboard extends StatelessWidget {
             SizedBox(
               height: MediaQuery.of(context).size.height / 40,
             ),
-            GestureDetector(
-              // onTap: () {
-              //   Navigator.push(
-              //               context,
-              //               MaterialPageRoute(
-              //                   builder: (context) => ChatDetailScreen(widget.chat)));
-              // },
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    "Recent Chats",
-                    style: kSmallParaTextStyle.copyWith(
-                        fontWeight: FontWeight.w600),
-                  ),
-                  Row(
-                    children: [
-                      Text(
-                        "View all",
-                        style: kSmallParaTextStyle.copyWith(
-                            fontWeight: FontWeight.bold, fontSize: 12),
-                      ),
-                      const SizedBox(
-                        width: 8,
-                      ),
-                      const Icon(
-                        Icons.arrow_forward_outlined,
-                        size: 14,
-                      )
-                    ],
-                  ),
-                ],
-              ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  "Recent Chats",
+                  style:
+                      kSmallParaTextStyle.copyWith(fontWeight: FontWeight.w600),
+                ),
+                Row(
+                  children: [
+                    Text(
+                      "View all",
+                      style: kSmallParaTextStyle.copyWith(
+                          fontWeight: FontWeight.bold, fontSize: 12),
+                    ),
+                    const SizedBox(
+                      width: 8,
+                    ),
+                    const Icon(
+                      Icons.arrow_forward_outlined,
+                      size: 14,
+                    )
+                  ],
+                ),
+              ],
             ),
             SizedBox(
               height: MediaQuery.of(context).size.height / 80,

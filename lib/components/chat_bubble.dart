@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pgc/constants/color_const.dart';
 import 'package:pgc/constants/const.dart';
 import 'package:pgc/constants/helper_class.dart';
 import 'package:pgc/constants/text_const.dart';
@@ -11,38 +12,50 @@ class ChatBubble extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Align(
-      alignment: messageModel.sender == Constants.fcAdmins
-          ? Alignment.centerLeft
-          : Alignment.centerRight,
+    return Padding(
+      padding: EdgeInsets.all(MediaQuery.of(context).size.width / 24),
       child: Container(
-        constraints: BoxConstraints(
-          maxWidth:
-              MediaQuery.of(context).size.width * 0.7, // Limit bubble width
-        ),
-        padding: EdgeInsets.all(10),
-        margin: EdgeInsets.symmetric(vertical: 4),
-        decoration: BoxDecoration(
-          color: messageModel.sender == Constants.fcAdmins
-              ? Colors.grey[300]
-              : Colors.blue[200],
-          borderRadius: BorderRadius.circular(10),
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              messageModel.content,
-              style: kSmallParaTextStyle.copyWith(fontWeight: FontWeight.w600),
-              maxLines: 4,
-              overflow: TextOverflow.ellipsis,
-            ),
-            SizedBox(height: 4),
-            Text(
-              HelperClass.formatTimestampToAmPm(messageModel.timestamp),
-              style: kSmallParaTextStyle.copyWith(fontSize: 12),
-            ),
-          ],
+        child: Align(
+          alignment: messageModel.sender == Constants.fcAdmins
+              ? Alignment.centerLeft
+              : Alignment.centerRight,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: [
+              ClipPath(
+                clipper: const ShapeBorderClipper(
+                  shape: ContinuousRectangleBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(15)),
+                  ),
+                ),
+                child: Container(
+                  constraints: BoxConstraints(
+                    maxWidth: MediaQuery.of(context).size.width *
+                        0.7, // Limit bubble width
+                  ),
+                  padding: EdgeInsets.all(10),
+                  margin: EdgeInsets.symmetric(vertical: 4),
+                  decoration: BoxDecoration(
+                    color: messageModel.sender == Constants.fcAdmins
+                        ? Colors.grey[300]
+                        : primaryBlueSoftenCustomColor,
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  child: Text(
+                    messageModel.content,
+                    style: kSmallParaTextStyle.copyWith(
+                        fontWeight: FontWeight.w600, color: Colors.white),
+                    maxLines: 4,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ),
+              ),
+              Text(
+                HelperClass.formatTimestampToAmPm(messageModel.timestamp),
+                style: kSmallParaTextStyle.copyWith(fontSize: 12),
+              ),
+            ],
+          ),
         ),
       ),
     );

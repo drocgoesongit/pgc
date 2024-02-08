@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:pgc/components/chat_bubble.dart';
+import 'package:pgc/constants/color_const.dart';
 import 'package:pgc/constants/const.dart';
 import 'package:pgc/constants/helper_class.dart';
 import 'package:pgc/constants/text_const.dart';
@@ -73,24 +74,25 @@ class _ChatDetailScreenState extends State<ChatDetailScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(
-          "Chat with owner",
-          style: kSubHeadingTextStyle,
+        title: Center(
+          child: Text(
+            "Chat with owner",
+            style: kSubHeadingTextStyle,
+          ),
         ),
         leading: GestureDetector(
           onTap: () {
             Navigator.pop(context);
           },
-          child: const Icon(
-            Icons.arrow_back_ios_new_rounded,
-            color: Colors.black,
+          child: Icon(
+            Icons.arrow_back_rounded,
+            color: primaryBlueSoftenCustomColor,
           ),
         ),
         backgroundColor: Colors.white,
       ),
-      body: Container(
-        height: MediaQuery.of(context).size.height - 100,
-        child: Column(children: [
+      body: Column(
+        children: [
           Expanded(
             child: StreamBuilder<List<MessageModel>>(
               stream: getGroupChat(widget.chatPlusUserId),
@@ -110,7 +112,6 @@ class _ChatDetailScreenState extends State<ChatDetailScreen> {
                     itemCount: messages.length,
                     itemBuilder: (context, index) {
                       MessageModel message = messages[index];
-
                       return ChatBubble(messageModel: message);
                     },
                   );
@@ -120,67 +121,95 @@ class _ChatDetailScreenState extends State<ChatDetailScreen> {
               },
             ),
           ),
-          // The input field for typing messages---------- ---------
-          Container(
-            padding: EdgeInsets.symmetric(horizontal: 16),
-            child: Row(
-              children: [
-                Expanded(
-                  child: TextFormField(
-                    controller: _messageController,
-                    textAlign: TextAlign.left,
-                    decoration: InputDecoration(
-                      contentPadding: EdgeInsets.symmetric(
-                        vertical: 12,
-                        horizontal: 16,
-                      ),
-                      filled: true,
-                      fillColor: Colors.white,
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(30),
-                        borderSide: BorderSide(
-                          color: Colors.black, // Border color
-                          width: 1, // Border width
+          Padding(
+            padding: EdgeInsets.all(MediaQuery.of(context).size.width / 24),
+            child: Container(
+              decoration: BoxDecoration(
+                border: Border.all(color: primaryBlueSoftenCustomColor),
+                borderRadius: BorderRadius.circular(15),
+              ),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: TextFormField(
+                      cursorColor: primaryBlueSoftenCustomColor,
+                      controller: _messageController,
+                      textAlign: TextAlign.left,
+                      decoration: InputDecoration(
+                        contentPadding: EdgeInsets.symmetric(
+                          vertical: 14,
+                          horizontal: 16,
                         ),
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(30),
-                        borderSide: BorderSide(
-                          color: Colors.black, // Focused border color
-                          width: 1, // Border width
+                        filled: true,
+                        fillColor: Colors.white,
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(15),
+                          borderSide: BorderSide.none,
                         ),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(15),
+                          borderSide: BorderSide.none,
+                        ),
+                        hintText: 'Write your message',
+                        hintStyle:
+                            TextStyle(fontFamily: "Gilroy", fontSize: 14),
                       ),
-                      hintText: 'Type a message...',
-                      hintStyle: TextStyle(fontFamily: "Inter"),
+                      focusNode: _messageFocusNode,
+                      onChanged: (value) {},
+                      maxLines: null,
+                      minLines: 1,
                     ),
-                    focusNode: _messageFocusNode,
-                    onChanged: (value) {},
-                    maxLines: null,
-                    minLines: 1,
                   ),
-                ),
-                SizedBox(width: 8),
-                ElevatedButton(
-                  onPressed: () async {
-                    message = _messageController.text.trim();
-                    await sendMessage(context);
-                    _messageController.clear();
-                  },
-                  style: ElevatedButton.styleFrom(
-                    shape: CircleBorder(),
-                    backgroundColor: Colors.black,
-                    padding: EdgeInsets.all(16),
+                  Container(
+                    padding: EdgeInsets.only(right: 8),
+                    child: Row(
+                      children: [
+                        GestureDetector(
+                          onTap: () {
+                            // Handle microphone icon onTap
+                          },
+                          child: Padding(
+                            padding: const EdgeInsets.only(right: 7.0),
+                            child: Icon(
+                              Icons.add_photo_alternate_rounded,
+                              color: primaryBlueSoftenCustomColor,
+                              size: 24,
+                            ),
+                          ),
+                        ),
+                        GestureDetector(
+                          onTap: () {
+                            // Handle microphone icon onTap
+                          },
+                          child: Padding(
+                            padding: const EdgeInsets.only(right: 7.0),
+                            child: Icon(
+                              Icons.mic_rounded,
+                              color: primaryBlueSoftenCustomColor,
+                              size: 24,
+                            ),
+                          ),
+                        ),
+                        GestureDetector(
+                          onTap: () async {
+                            message = _messageController.text.trim();
+                            await sendMessage(context);
+                            _messageController.clear();
+                          },
+                          child: Icon(
+                            Icons.send_rounded,
+                            color: primaryBlueSoftenCustomColor,
+                            size: 24,
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
-                  child: Icon(
-                    Icons.send_rounded,
-                    color: Colors.white,
-                    size: 25,
-                  ),
-                ),
-              ],
+                ],
+              ),
             ),
           )
-        ]),
+        ],
       ),
     );
   }

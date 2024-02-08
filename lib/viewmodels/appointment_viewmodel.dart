@@ -81,6 +81,10 @@ class AppointmentViewModel {
           .update({
         formattedTime: FieldValue.arrayRemove([model.apptId])
       });
+
+      await _firestore.collection(Constants.fcUsers).doc(model.userId).update({
+        'appointments': FieldValue.arrayRemove([model.apptId])
+      });
       return 'success';
     } catch (e) {
       print(e);

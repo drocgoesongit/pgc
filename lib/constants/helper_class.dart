@@ -274,4 +274,20 @@ class HelperClass {
         '${hourIn12HourFormat.toString().padLeft(2, '0')}:${dateTime.minute.toString().padLeft(2, '0')} $period';
     return formattedTime;
   }
+
+  static String getInitials(String firstName, String lastName) {
+    String initials = '';
+
+    // Check if first name is not empty and add its initial
+    if (firstName.isNotEmpty) {
+      initials += firstName[0].toUpperCase();
+    }
+
+    // Check if last name is not empty and add its initial
+    if (lastName.isNotEmpty) {
+      initials += lastName[0].toUpperCase();
+    }
+
+    return initials;
+  }
 }

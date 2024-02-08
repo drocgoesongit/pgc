@@ -61,18 +61,9 @@ class CustomerDetailScreenState extends State<CustomerDetailScreen> {
                                 Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    GestureDetector(
-                                      onTap: () {
-                                        Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                                builder: (context) =>
-                                                    AllCustomer()));
-                                      },
-                                      child: Text(
-                                        "Jane D.",
-                                        style: kMainTitleBoldTextStyle,
-                                      ),
+                                    Text(
+                                      "Jane D.",
+                                      style: kMainTitleBoldTextStyle,
                                     ),
                                     Row(
                                       children: [
@@ -231,7 +222,6 @@ class CustomerDetailScreenState extends State<CustomerDetailScreen> {
                                 height:
                                     MediaQuery.of(context).size.height / 80),
                             AppointmentCard(
-                                image: "assets/images/petblack.png",
                                 title: "Luxury Spa",
                                 day: "Tuesday",
                                 time: "12:00 am",

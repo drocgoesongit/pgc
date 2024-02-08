@@ -1,12 +1,18 @@
 import 'dart:developer';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:pgc/admin_views/all_appointments_screen.dart';
-import 'package:pgc/components/appointment_rectangle_card.dart';
+import 'package:pgc/admin_views/all_customers_screen.dart';
+import 'package:pgc/admin_views/appointment_detail.dart';
+import 'package:pgc/components/admin_rectangle_card.dart';
 import 'package:pgc/components/dashboard_card.dart';
 import 'package:pgc/constants/color_const.dart';
+import 'package:pgc/constants/const.dart';
+import 'package:pgc/constants/helper_class.dart';
 import 'package:pgc/constants/text_const.dart';
 import 'package:pgc/model/appointment_model.dart';
+import 'package:pgc/model/chat_model.dart';
 import 'package:pgc/viewmodels/analytics_viewmodel.dart';
 import 'package:pgc/views/chat_screen.dart';
 
@@ -16,12 +22,15 @@ class Dashboard extends StatelessWidget {
   int appointmentRemaining = 0;
   int todayAppointment = 0;
   int totalNumberOfCustomers = 0;
+  List<AppointmentModel> appointments = [];
+  List<ChatModel> chats = [];
 
   Future<String> getAnalyticsData() async {
     try {
-      // appointmentRemaining =
-      // await AnalyticsViewModel().getRemainingTodaysAppointment();
-      todayAppointment = await AnalyticsViewModel().getNumberOfAppointments();
+      appointmentRemaining =
+          await AnalyticsViewModel().getRemainingTodaysAppointment();
+      todayAppointment =
+          await AnalyticsViewModel().getNumberOfAppointmentsForToday();
       totalNumberOfCustomers = await AnalyticsViewModel().getNumberOfUsers();
       return "success";
     } catch (e) {
@@ -32,9 +41,41 @@ class Dashboard extends StatelessWidget {
 
   Future<List<AppointmentModel>> getUpcomingAppointments() async {
     try {
-      List<AppointmentModel> appointments = [];
-      await Future.delayed(Duration(seconds: 2));
+      // Fetch appointments for today
+      await FirebaseFirestore.instance
+          .collection(Constants.fcAppointments)
+          .where('apptDate', isEqualTo: HelperClass.getSameDayDate())
+          .where('apptStatus', isEqualTo: Constants.appointmentActive)
+          .get()
+          .then((querySnapshot) {
+        querySnapshot.docs.forEach((doc) {
+          log(querySnapshot.docs.toString());
+          appointments.add(
+              AppointmentModel.fromJson(doc.data() as Map<String, dynamic>));
+        });
+      });
       return appointments;
+    } catch (e) {
+      log(e.toString());
+      return [];
+    }
+  }
+
+  Future<List<ChatModel>> getRecentChats() async {
+    try {
+      // Fetch appointments for today
+      await FirebaseFirestore.instance
+          .collection(Constants.fcChatNode)
+          .orderBy(Constants.fcTimeStampChatNode, descending: true)
+          .limit(3)
+          .get()
+          .then((querySnapshot) {
+        querySnapshot.docs.forEach((doc) {
+          log(querySnapshot.docs.toString());
+          chats.add(ChatModel.fromMap(doc.data() as Map<String, dynamic>));
+        });
+      });
+      return chats;
     } catch (e) {
       log(e.toString());
       return [];
@@ -79,10 +120,25 @@ class Dashboard extends StatelessWidget {
                         text: "Today's Appointments",
                         value: todayAppointment.toString(),
                       ),
-                      DashboardCard(
-                        icon: Icons.person,
-                        text: "Total Number of Customers",
-                        value: totalNumberOfCustomers.toString(),
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => AllCustomer(
+                                        numberOfTotalCustomers:
+                                            totalNumberOfCustomers,
+                                        numberOfAppointmentsRemaining:
+                                            appointmentRemaining,
+                                        numberOfTodaysAppointments:
+                                            todayAppointment,
+                                      )));
+                        },
+                        child: DashboardCard(
+                          icon: Icons.person,
+                          text: "Total Number of Customers",
+                          value: totalNumberOfCustomers.toString(),
+                        ),
                       ),
                     ],
                   );
@@ -125,30 +181,42 @@ class Dashboard extends StatelessWidget {
                 ),
               ],
             ),
+            FutureBuilder(
+                future: getRecentChats(),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return Center(child: CircularProgressIndicator());
+                  } else if (snapshot.hasError) {
+                    return Center(child: Text('Error: ${snapshot.error}'));
+                  } else {
+                    return ListView.builder(
+                      itemCount: chats.length,
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
+                      itemBuilder: (context, index) {
+                        return GestureDetector(
+                            onTap: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          AppointmentDetailScreen(
+                                              appointmentModel:
+                                                  appointments[index])));
+                            },
+                            child: RecentChat(
+                                image: "",
+                                id: chats[index].chatId,
+                                chat: chats[index].lastMessage,
+                                timestamp: HelperClass.formatTimestampToAmPm(
+                                    chats[index].lastMessageTimestamp)));
+                      },
+                    );
+                  }
+                }),
             SizedBox(
               height: MediaQuery.of(context).size.height / 80,
             ),
-            RecentChat(
-                image: "assets/images/profile.png",
-                id: "Jane D.",
-                chat: "Hi Jenny",
-                timestamp: "12.00 AM"),
-            SizedBox(
-              height: MediaQuery.of(context).size.height / 60,
-            ),
-            RecentChat(
-                image: "assets/images/profile.png",
-                id: "Jane D.",
-                chat: "Hi Jenny",
-                timestamp: "12.00 AM"),
-            SizedBox(
-              height: MediaQuery.of(context).size.height / 60,
-            ),
-            RecentChat(
-                image: "assets/images/profile.png",
-                id: "Jane D.",
-                chat: "Hi Jenny",
-                timestamp: "12.00 AM"),
             SizedBox(
               height: MediaQuery.of(context).size.height / 40,
             ),
@@ -189,24 +257,40 @@ class Dashboard extends StatelessWidget {
             SizedBox(
               height: MediaQuery.of(context).size.height / 60,
             ),
-            AppointmentCard(
-                image: "assets/images/petblack.png",
-                title: "Luxury Spa ",
-                day: "Today",
-                time: "12:30 am",
-                petname: "Bella"),
-            AppointmentCard(
-                image: "assets/images/petblack.png",
-                title: "Luxury Spa ",
-                day: "Today",
-                time: "12:30 am",
-                petname: "Bella"),
-            AppointmentCard(
-                image: "assets/images/petblack.png",
-                title: "Luxury Spa ",
-                day: "Today",
-                time: "12:30 am",
-                petname: "Bella"),
+            FutureBuilder(
+                future: getUpcomingAppointments(),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return Center(child: CircularProgressIndicator());
+                  } else if (snapshot.hasError) {
+                    return Center(child: Text('Error: ${snapshot.error}'));
+                  } else {
+                    return ListView.builder(
+                      itemCount: appointments.length,
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
+                      itemBuilder: (context, index) {
+                        return GestureDetector(
+                          onTap: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        AppointmentDetailScreen(
+                                            appointmentModel:
+                                                appointments[index])));
+                          },
+                          child: AdminCard(
+                              time: appointments[index].apptTime,
+                              text:
+                                  appointments[index].apptTime.substring(0, 2),
+                              name: appointments[index].username,
+                              service: appointments[index].petName),
+                        );
+                      },
+                    );
+                  }
+                }),
           ],
         ),
       ),

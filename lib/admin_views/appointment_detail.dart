@@ -60,18 +60,9 @@ class _AppointmentDetailScreenState extends State<AppointmentDetailScreen> {
                                 Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    GestureDetector(
-                                      onTap: () {
-                                        Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                                builder: (context) =>
-                                                    AllCustomer()));
-                                      },
-                                      child: Text(
-                                        widget.appointmentModel.username,
-                                        style: kMainTitleBoldTextStyle,
-                                      ),
+                                    Text(
+                                      widget.appointmentModel.username,
+                                      style: kMainTitleBoldTextStyle,
                                     ),
                                     Row(
                                       children: [
@@ -236,7 +227,6 @@ class _AppointmentDetailScreenState extends State<AppointmentDetailScreen> {
                                 height:
                                     MediaQuery.of(context).size.height / 80),
                             AppointmentCard(
-                                image: "assets/images/petblack.png",
                                 title: "Luxury Spa",
                                 day: "Tuesday",
                                 time: "12:00 am",

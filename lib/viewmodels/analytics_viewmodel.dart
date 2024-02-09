@@ -9,27 +9,23 @@ class AnalyticsViewModel {
 
   Future<int> getNumberOfUsers() async {
     try {
-      int count = 0;
-      _firestore.collection("users").count().get().then(
-            (res) => count = res.count!,
-            onError: (e) => throw Exception(e),
-          );
-
-      return count;
+      QuerySnapshot snapshot =
+          await _firestore.collection(Constants.fcUsers).get();
+      return snapshot.size;
     } catch (e) {
       log(e.toString());
       return -1;
     }
   }
 
-  Future<int> getNumberOfAppointments() async {
+  Future<int> getNumberOfAppointmentsForToday() async {
     try {
-      int count = (await _firestore
+      QuerySnapshot snapshot = await _firestore
           .collection(Constants.fcAppointments)
+          .where("apptStatus", isEqualTo: Constants.appointmentActive)
           .where("apptDate", isEqualTo: HelperClass.getSameDayDate())
-          .snapshots()
-          .length);
-      return count;
+          .get();
+      return snapshot.size;
     } catch (e) {
       log(e.toString());
       return -1;
@@ -38,13 +34,12 @@ class AnalyticsViewModel {
 
   Future<int> getRemainingTodaysAppointment() async {
     try {
-      int count = (await _firestore
+      QuerySnapshot snapshot = await _firestore
           .collection(Constants.fcAppointments)
-          .where("apptDate", isEqualTo: HelperClass.getSameDayDate())
           .where("apptStatus", isEqualTo: Constants.appointmentActive)
-          .snapshots()
-          .length);
-      return count;
+          .where("apptDate", isEqualTo: HelperClass.getSameDayDate())
+          .get();
+      return snapshot.size;
     } catch (e) {
       log(e.toString());
       return -1;

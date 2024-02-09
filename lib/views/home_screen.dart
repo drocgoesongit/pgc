@@ -1,14 +1,19 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:pgc/admin_views/add_new_service_screen.dart';
 import 'package:pgc/admin_views/all_appointments_screen.dart';
 import 'package:pgc/admin_views/customer_detail_screen.dart';
 import 'package:pgc/components/appointment_rectangle_card.dart';
+import 'package:pgc/components/home_screen_static_section.dart';
 import 'package:pgc/components/review_card.dart';
 import 'package:pgc/components/service_square_card.dart';
 import 'package:pgc/constants/color_const.dart';
+import 'package:pgc/constants/const.dart';
 import 'package:pgc/constants/text_const.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'package:pgc/model/appointment_model.dart';
+import 'package:pgc/model/service_model.dart';
 import 'package:pgc/viewmodels/chat_viewmodel.dart';
 import 'package:pgc/views/all_services_screen.dart';
 import 'package:pgc/views/dashboard_screen.dart';
@@ -24,6 +29,40 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  List<ServiceModel> services = [];
+  List<AppointmentModel> appointments = [];
+
+  Future<List<ServiceModel>> getServices() async {
+    final servicesSnapshot = await FirebaseFirestore.instance
+        .collection(Constants.fcServicesNode)
+        .get();
+
+    servicesSnapshot.docs.forEach((service) {
+      services.add(ServiceModel.fromJson(service.data()));
+    });
+
+    return services;
+  }
+
+  Future<List<AppointmentModel>> getUpcomingAppointmentForUser() async {
+    try {
+      await FirebaseFirestore.instance
+          .collection(Constants.fcAppointments)
+          .where('userId', isEqualTo: FirebaseAuth.instance.currentUser!.uid)
+          .where('apptStatus', isEqualTo: Constants.appointmentActive)
+          .get()
+          .then((querySnapshot) {
+        querySnapshot.docs.forEach((doc) {
+          appointments.add(
+              AppointmentModel.fromJson(doc.data() as Map<String, dynamic>));
+        });
+      });
+      return appointments;
+    } catch (e) {
+      return [];
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -255,25 +294,30 @@ class _HomeScreenState extends State<HomeScreen> {
               SizedBox(
                 height: MediaQuery.of(context).size.height / 80,
               ),
-              const SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: Row(
-                  children: [
-                    SquareCard(
-                        image: 'assets/images/petgreen.png',
-                        text: 'Basic\npackage'),
-                    SquareCard(
-                        image: 'assets/images/petblack.png',
-                        text: 'Basic\npackage'),
-                    SquareCard(
-                        image: 'assets/images/petyellow.png',
-                        text: 'Basic\npackage'),
-                    SquareCard(
-                        image: 'assets/images/petphoto.png',
-                        text: 'Basic\npackage'),
-                  ],
-                ),
-              ),
+              FutureBuilder(
+                  future: getServices(),
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return Center(child: CircularProgressIndicator());
+                    } else if (snapshot.hasError) {
+                      return Center(child: Text('Error: ${snapshot.error}'));
+                    } else {
+                      return Container(
+                        height: MediaQuery.of(context).size.height / 6.5,
+                        child: ListView.builder(
+                          shrinkWrap: true,
+                          scrollDirection: Axis.horizontal,
+                          physics: const NeverScrollableScrollPhysics(),
+                          itemCount: services.length,
+                          itemBuilder: (BuildContext context, int index) {
+                            return ServiceSquareCard(
+                              model: services[index],
+                            );
+                          },
+                        ),
+                      );
+                    }
+                  }),
               SizedBox(
                 height: MediaQuery.of(context).size.height / 60,
               ),
@@ -282,113 +326,35 @@ class _HomeScreenState extends State<HomeScreen> {
                 style:
                     kSubHeadingTextStyle.copyWith(fontWeight: FontWeight.bold),
               ),
-              const AppointmentCard(
-                image: 'assets/images/petblue.png',
-                title: 'Luxury Spa',
-                time: "12:30 am",
-                day: "Today",
-                petname: "Bella",
-              ),
+              FutureBuilder(
+                  future: getUpcomingAppointmentForUser(),
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return Center(child: CircularProgressIndicator());
+                    } else if (snapshot.hasError) {
+                      return Center(child: Text('Error: ${snapshot.error}'));
+                    } else {
+                      return ListView.builder(
+                        shrinkWrap: true,
+                        physics: const NeverScrollableScrollPhysics(),
+                        itemCount: appointments.length,
+                        itemBuilder: (BuildContext context, int index) {
+                          return AppointmentCard(
+                              title: appointments[index].username,
+                              day: appointments[index].apptDate,
+                              time: appointments[index].apptTime,
+                              petname: appointments[index].petName);
+                        },
+                      );
+                    }
+                  }),
               SizedBox(
                 height: MediaQuery.of(context).size.height / 60,
               ),
-              Text(
-                "Reviews",
-                style:
-                    kSubHeadingTextStyle.copyWith(fontWeight: FontWeight.bold),
-              ),
-              SizedBox(
-                height: MediaQuery.of(context).size.height / 60,
-              ),
-              const ReviewCard(
-                profileImagePath: 'assets/images/profile.png',
-                starRating: 4,
-                reviewText: 'This is a great product. I highly recommend it!',
-                uname: "Jane D.",
-                udesg: "Regular Customer",
-              ),
-              SizedBox(
-                height: MediaQuery.of(context).size.height / 40,
-              ),
-              Text(
-                "Brand values",
-                style:
-                    kSubHeadingTextStyle.copyWith(fontWeight: FontWeight.bold),
-              ),
-              SizedBox(
-                height: MediaQuery.of(context).size.height / 60,
-              ),
-              Row(
-                // mainAxisAlignment: MainAxisAlignment.start,
-                // crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const ImageTextContainer(
-                    imagePath: 'assets/images/brandval1.png',
-                    text: 'Passion for pets',
-                    smalltext: "We genuinly love and care for animals.",
-                  ),
-                  SizedBox(
-                    width: MediaQuery.of(context).size.width / 10,
-                  ),
-                  const ImageTextContainer(
-                    imagePath: 'assets/images/brandval2.png',
-                    text: 'Proffesionalism',
-                    smalltext:
-                        "Our skilled groomers prioritize safety,quality,and excellence",
-                  ),
-                ],
-              ),
-              SizedBox(
-                height: MediaQuery.of(context).size.height / 60,
-              ),
-              Text(
-                "Gallery",
-                style:
-                    kSubHeadingTextStyle.copyWith(fontWeight: FontWeight.bold),
-              ),
-              SizedBox(
-                height: MediaQuery.of(context).size.height / 60,
-              ),
-              StaggeredGrid.count(
-                crossAxisCount: 4,
-                mainAxisSpacing: 8,
-                crossAxisSpacing: 8,
-                children: [
-                  StaggeredGridTile.count(
-                    crossAxisCellCount: 2,
-                    mainAxisCellCount: 3,
-                    child: imageContainer('assets/images/image1.png'),
-                  ),
-                  StaggeredGridTile.count(
-                    crossAxisCellCount: 2,
-                    mainAxisCellCount: 2,
-                    child: imageContainer('assets/images/image2.png'),
-                  ),
-                  StaggeredGridTile.count(
-                    crossAxisCellCount: 2,
-                    mainAxisCellCount: 4,
-                    child: imageContainer('assets/images/image3.png'),
-                  ),
-                  StaggeredGridTile.count(
-                    crossAxisCellCount: 2,
-                    mainAxisCellCount: 2,
-                    child: imageContainer('assets/images/image4.png'),
-                  ),
-                ],
-              )
+              StaticSectionHomeScreen(),
             ]),
           ),
         ]),
-      ),
-    );
-  }
-
-  imageContainer(imgPath) {
-    return ClipRRect(
-      borderRadius: BorderRadius.circular(15.46),
-      child: Image.asset(
-        imgPath,
-        fit: BoxFit.cover,
       ),
     );
   }

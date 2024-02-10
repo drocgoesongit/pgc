@@ -127,12 +127,12 @@ class CustomerCard extends StatelessWidget {
     return Container(
       color: Colors.white,
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           // Image on the extreme left
           Container(
-            height: 60,
-            width: 60,
+            height: 55,
+            width: 55,
             decoration: BoxDecoration(
               shape: BoxShape.circle,
               border: Border.all(
@@ -140,8 +140,8 @@ class CustomerCard extends StatelessWidget {
             ),
             child: Center(
               child: Container(
-                height: 50, // Adjust the height as needed
-                width: 50, // Adjust the width as needed
+                height: 45, // Adjust the height as needed
+                width: 45, // Adjust the width as needed
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
                   color: TealLightCustomColor, // Inner circle color
@@ -157,27 +157,33 @@ class CustomerCard extends StatelessWidget {
           ),
           SizedBox(width: MediaQuery.of(context).size.width / 20),
           // Column of multiple texts
-          Text(
-            name,
-            overflow: TextOverflow.ellipsis,
-            maxLines: 2,
-            style: kSmallParaTextStyle.copyWith(fontWeight: FontWeight.bold),
+          Expanded(
+            child: Text(
+              name,
+              overflow: TextOverflow.ellipsis,
+              maxLines: 2,
+              style: kSmallParaTextStyle.copyWith(fontWeight: FontWeight.bold),
+            ),
           ),
           SizedBox(width: MediaQuery.of(context).size.width / 15),
           Text(
             visits,
             overflow: TextOverflow.ellipsis,
-            maxLines: 2,
+            maxLines: 1,
             style: kSmallParaTextStyle.copyWith(
                 fontWeight: FontWeight.bold, color: Colors.black),
           ),
           SizedBox(width: MediaQuery.of(context).size.width / 10),
-          Text(
-            email,
-            overflow: TextOverflow.ellipsis,
-            maxLines: 2,
-            style: kSmallParaTextStyle.copyWith(
-                fontWeight: FontWeight.w400, fontSize: 12, color: Colors.black),
+          Expanded(
+            child: Text(
+              email,
+              overflow: TextOverflow.ellipsis,
+              maxLines: 1,
+              style: kSmallParaTextStyle.copyWith(
+                  fontWeight: FontWeight.w400,
+                  fontSize: 12,
+                  color: Colors.black),
+            ),
           ),
         ],
       ),

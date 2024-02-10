@@ -54,7 +54,11 @@ class _AppointmentRescheduleScreenState
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(title: const Text('Reschedule appointment')),
+        appBar: AppBar(
+            title: Text(
+          'Reschedule appointment',
+          style: kSubHeadingTextStyle,
+        )),
         body: SingleChildScrollView(
           child: Column(children: [
             FutureBuilder(
@@ -68,55 +72,163 @@ class _AppointmentRescheduleScreenState
                           Padding(
                             padding: EdgeInsets.all(
                                 MediaQuery.of(context).size.width / 20),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
+                            child: Row(
                               children: [
-                                Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
+                                CircleAvatar(
+                                  backgroundImage:
+                                      AssetImage("assets/images/profile.png"),
+                                  radius: 60,
+                                ),
+                                SizedBox(
+                                    width:
+                                        MediaQuery.of(context).size.width / 20),
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(
-                                      "Service 1",
-                                      style: kMainTitleBoldTextStyle.copyWith(
-                                        color: Colors.black,
-                                      ),
+                                      widget.appointmentModel.username,
+                                      style: kMainTitleBoldTextStyle,
                                     ),
-                                    Text(
-                                      "\$21",
-                                      style: kMainTitleBoldTextStyle.copyWith(
-                                        color: Colors.black,
-                                      ),
-                                    )
+                                    Row(
+                                      children: [
+                                        Text(
+                                          "pet name: ",
+                                          style: kSmallParaTextStyle.copyWith(
+                                              fontWeight: FontWeight.w500),
+                                        ),
+                                        Text(
+                                          widget.appointmentModel.petName,
+                                          style: kSmallParaTextStyle.copyWith(
+                                              fontWeight: FontWeight.bold),
+                                        ),
+                                      ],
+                                    ),
+                                    SizedBox(
+                                        height:
+                                            MediaQuery.of(context).size.height /
+                                                60),
+                                    Row(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Icon(
+                                          Icons.calendar_month_rounded,
+                                          size: 18,
+                                        ),
+                                        SizedBox(
+                                          width: 4,
+                                        ),
+                                        Column(
+                                          crossAxisAlignment: CrossAxisAlignment
+                                              .start, // Align texts to the right
+                                          children: [
+                                            Text(
+                                              widget.appointmentModel.apptDate,
+                                              style: kSmallParaTextStyle
+                                                  .copyWith(fontSize: 14),
+                                            ),
+                                            Text(
+                                              widget.appointmentModel.apptTime,
+                                              style: kSmallParaTextStyle
+                                                  .copyWith(fontSize: 14),
+                                            ),
+                                          ],
+                                        ),
+                                      ],
+                                    ),
+                                    SizedBox(
+                                        height:
+                                            MediaQuery.of(context).size.height /
+                                                40),
+                                    Row(
+                                      children: [
+                                        ElevatedButton(
+                                          onPressed: () {},
+                                          style: ElevatedButton.styleFrom(
+                                            primary:
+                                                primaryBlueCustomColor, // Your desired color
+                                            shape: ContinuousRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(30),
+                                            ),
+                                            // fixedSize: Size.fromHeight(58), // Your desired height
+                                          ),
+                                          child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            children: [
+                                              Icon(
+                                                Icons.call_rounded,
+                                                color: Colors.white,
+                                                size: 15,
+                                              ), // Replace "example_icon" with the desired icon
+                                              SizedBox(
+                                                  width:
+                                                      4), // Adjust the spacing between icon and text as needed
+                                              Text(
+                                                "Call",
+                                                style: kSmallParaTextStyle
+                                                    .copyWith(
+                                                        color: Colors.white,
+                                                        fontSize: 14),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                        SizedBox(
+                                            width: MediaQuery.of(context)
+                                                    .size
+                                                    .width /
+                                                40),
+                                        ElevatedButton(
+                                          onPressed: () {},
+                                          style: ElevatedButton.styleFrom(
+                                            primary:
+                                                primaryBlueCustomColor, // Your desired color
+                                            shape: ContinuousRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(30),
+                                            ),
+                                            // fixedSize: Size.fromHeight(58), // Your desired height
+                                          ),
+                                          child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            children: [
+                                              Icon(
+                                                Icons.info_rounded,
+                                                color: Colors.white,
+                                                size: 16,
+                                              ), // Replace "example_icon" with the desired icon
+                                              SizedBox(
+                                                  width:
+                                                      4), // Adjust the spacing between icon and text as needed
+                                              Text(
+                                                "info",
+                                                style: kSmallParaTextStyle
+                                                    .copyWith(
+                                                        color: Colors.white,
+                                                        fontSize: 14),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ],
+                                    ),
                                   ],
-                                ),
-                                SizedBox(
-                                  height:
-                                      MediaQuery.of(context).size.height / 40,
-                                ),
-                                Text(
-                                  "About service",
-                                  style: kSmallParaTextStyle.copyWith(
-                                      fontWeight: FontWeight.w600),
-                                ),
-                                SizedBox(
-                                  height:
-                                      MediaQuery.of(context).size.height / 80,
-                                ),
-                                Text(
-                                  "Here, will be the service description",
-                                  style: kSmallParaTextStyle.copyWith(
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.w500,
-                                      color: Colors.black),
-                                  maxLines: 3,
-                                  overflow: TextOverflow.ellipsis,
                                 ),
                               ],
                             ),
                           ),
                           SizedBox(
-                            height: MediaQuery.of(context).size.height / 20,
+                            height: MediaQuery.of(context).size.height / 60,
                           ),
+                          Divider(
+                            thickness: 1,
+                            color: Colors.grey.shade300,
+                          ),
+                          SizedBox(
+                              height: MediaQuery.of(context).size.height / 60),
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [

@@ -63,6 +63,7 @@ class AllCustomer extends StatelessWidget {
       body: SingleChildScrollView(
         padding: EdgeInsets.all(MediaQuery.of(context).size.width / 20),
         child: Column(
+          // crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -95,28 +96,47 @@ class AllCustomer extends StatelessWidget {
               children: [
                 Spacer(),
                 Spacer(),
-                Text(
-                  "Customer name",
-                  style: kSmallParaTextStyle.copyWith(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 10,
-                      color: Colors.black),
+                Expanded(
+                  flex: 3,
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text(
+                      "Customer name",
+                      style: kSmallParaTextStyle.copyWith(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 10,
+                        color: Colors.black,
+                      ),
+                    ),
+                  ),
                 ),
-                Spacer(),
-                Text(
-                  "No. of visits",
-                  style: kSmallParaTextStyle.copyWith(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 10,
-                      color: Colors.black),
+                Expanded(
+                  flex: 2,
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text(
+                      "No. of visits",
+                      style: kSmallParaTextStyle.copyWith(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 10,
+                        color: Colors.black,
+                      ),
+                    ),
+                  ),
                 ),
-                Spacer(),
-                Text(
-                  "Email/Phone",
-                  style: kSmallParaTextStyle.copyWith(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 10,
-                      color: Colors.black),
+                Expanded(
+                  flex: 3,
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text(
+                      "Email/Phone",
+                      style: kSmallParaTextStyle.copyWith(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 10,
+                        color: Colors.black,
+                      ),
+                    ),
+                  ),
                 ),
               ],
             ),
@@ -136,26 +156,29 @@ class AllCustomer extends StatelessWidget {
                       shrinkWrap: true,
                       physics: const NeverScrollableScrollPhysics(),
                       itemBuilder: (context, index) {
-                        return GestureDetector(
-                          onTap: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) =>
-                                        CustomerDetailScreen()));
-                          },
-                          child: CustomerCard(
-                              email: customersList[index].email,
-                              text: HelperClass.getInitials(
-                                customersList[index].firstName,
-                                customersList[index].lastName,
-                              ),
-                              visits: customersList[index]
-                                  .appointments
-                                  .length
-                                  .toString(),
-                              name:
-                                  "${customersList[index].firstName} ${customersList[index].lastName}"),
+                        return Padding(
+                          padding: const EdgeInsets.only(bottom: 12.0),
+                          child: GestureDetector(
+                            onTap: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          CustomerDetailScreen()));
+                            },
+                            child: CustomerCard(
+                                email: customersList[index].email,
+                                text: HelperClass.getInitials(
+                                  customersList[index].firstName,
+                                  customersList[index].lastName,
+                                ),
+                                visits: customersList[index]
+                                    .appointments
+                                    .length
+                                    .toString(),
+                                name:
+                                    "${customersList[index].firstName} ${customersList[index].lastName}"),
+                          ),
                         );
                       },
                     );

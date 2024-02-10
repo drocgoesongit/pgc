@@ -129,4 +129,24 @@ class AppointmentViewModel {
       return "error";
     }
   }
+
+  Future<void> setPastAppointmentToDone() async {
+    try {
+      await _firestore
+          .collection(Constants.fcAppointments)
+          .where('apptStatus', isEqualTo: Constants.appointmentActive)
+          .where('apptDate', isLessThan: HelperClass.getTwoDaysBeforeDate())
+          .get()
+          .then((value) {
+        value.docs.forEach((element) async {
+          await _firestore
+              .collection(Constants.fcAppointments)
+              .doc(element.id)
+              .update({'apptStatus': Constants.appointmentCompleted});
+        });
+      });
+    } catch (e) {
+      log(e.toString());
+    }
+  }
 }

@@ -290,4 +290,20 @@ class HelperClass {
 
     return initials;
   }
+
+  static String getTwoDaysBeforeDate() {
+    String twoDigits(int n) {
+      if (n >= 10) {
+        return '$n';
+      }
+      return '0$n';
+    }
+
+    DateTime now = DateTime.now();
+    DateTime twoDaysBefore = now.subtract(Duration(days: 2));
+    String formattedDate =
+        '${twoDaysBefore.year}-${twoDigits(twoDaysBefore.month)}-${twoDigits(twoDaysBefore.day)}';
+
+    return formattedDate;
+  }
 }

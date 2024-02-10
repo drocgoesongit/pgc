@@ -14,6 +14,7 @@ import 'package:pgc/constants/text_const.dart';
 import 'package:pgc/model/appointment_model.dart';
 import 'package:pgc/model/chat_model.dart';
 import 'package:pgc/viewmodels/analytics_viewmodel.dart';
+import 'package:pgc/viewmodels/appointment_viewmodel.dart';
 import 'package:pgc/views/chat_screen.dart';
 
 class Dashboard extends StatelessWidget {
@@ -98,6 +99,17 @@ class Dashboard extends StatelessWidget {
         title: Center(
           child: Text("Dashboard", style: kMainTitleBoldTextStyle),
         ),
+        actions: [
+          IconButton(
+            icon: Icon(
+              Icons.history_rounded,
+              color: primaryBlueSoftenCustomColor,
+            ),
+            onPressed: () async {
+              await AppointmentViewModel().setPastAppointmentToDone();
+            },
+          ),
+        ],
       ),
       body: SingleChildScrollView(
         padding: EdgeInsets.all(MediaQuery.of(context).size.width / 20),

@@ -13,6 +13,7 @@ import 'package:pgc/views/signin_screen.dart';
 import 'package:pgc/views/signup_screen.dart';
 import 'package:pgc/views/splash_screen.dart';
 import 'package:pgc/views/forgot_password_screen.dart';
+import 'package:pgc/web_views/web_landing.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -33,7 +34,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: primaryBlueCustomColor),
         useMaterial3: true,
       ),
-      home: HomeScreen(),
+      home: LandingPage(),
     );
   }
 }

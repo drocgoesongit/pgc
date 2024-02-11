@@ -4,7 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:pgc/model/user_model.dart';
 import 'package:pgc/views/home_screen.dart';
-import 'package:pgc/views/sign_in_screen.dart';
+import 'package:pgc/views/signin_screen.dart';
 
 class SignInBackend {
   FirebaseAuth auth = FirebaseAuth.instance;
@@ -117,7 +117,7 @@ class SignInBackend {
       await auth.signOut();
       Navigator.pop(context);
       Navigator.pushReplacement(context,
-          MaterialPageRoute(builder: (context) => const SigninScreen()));
+          MaterialPageRoute(builder: (context) => const LoginScreen()));
       log("User logged out successfully");
     } catch (e) {
       Navigator.pop(context);

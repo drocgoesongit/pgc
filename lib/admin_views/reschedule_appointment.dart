@@ -1,10 +1,6 @@
-// ignore_for_file: use_build_context_synchronously
-
 import 'dart:developer';
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:pgc/components/single_info_alert_box.dart';
 import 'package:pgc/constants/color_const.dart';
 import 'package:pgc/constants/helper_class.dart';
 import 'package:pgc/constants/text_const.dart';
@@ -14,7 +10,7 @@ import 'package:pgc/model/one_hour_model.dart';
 import 'package:pgc/viewmodels/appointment_viewmodel.dart';
 import 'package:pgc/viewmodels/slots_status_viewmodel.dart';
 import 'package:pgc/views/home_screen.dart';
-import 'package:pgc/views/sign_in_screen.dart';
+import 'package:pgc/views/signin_screen.dart';
 
 class AppointmentRescheduleScreen extends StatefulWidget {
   const AppointmentRescheduleScreen(
@@ -518,7 +514,7 @@ class _AppointmentRescheduleScreenState
                                                           context,
                                                           MaterialPageRoute(
                                                               builder: (context) =>
-                                                                  const SigninScreen()),
+                                                                  const LoginScreen()),
                                                         ); // Navigate to the SigninScreen
                                                       },
                                                       child: Text(

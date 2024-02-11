@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:pgc/constants/color_const.dart';
 import 'package:pgc/constants/text_const.dart';
+import 'package:pgc/viewmodels/signin_viewmodel.dart';
+import 'package:pgc/views/home_screen.dart';
 import 'package:pgc/views/signin_screen.dart';
 
 class SignupPage extends StatefulWidget {
@@ -10,7 +12,8 @@ class SignupPage extends StatefulWidget {
 
 class _SignupPageState extends State<SignupPage> {
   bool _obscurePassword = true;
-  TextEditingController _nameController = TextEditingController();
+  TextEditingController _firstNameController = TextEditingController();
+  TextEditingController _secondNameController = TextEditingController();
   TextEditingController _emailController = TextEditingController();
   TextEditingController _passwordController = TextEditingController();
   bool _nameError = false;
@@ -132,29 +135,66 @@ class _SignupPageState extends State<SignupPage> {
                   ],
                 ),
                 SizedBox(height: 20),
-                ClipPath(
-                  clipper: ShapeBorderClipper(
-                    shape: ContinuousRectangleBorder(
-                        borderRadius:
-                            const BorderRadius.all(Radius.circular(30)),
-                        side: BorderSide(
-                          color: softGrayStrokeCustomColor,
-                          width: 2,
-                        )),
-                  ),
-                  child: TextFormField(
-                    controller: _nameController,
-                    decoration: InputDecoration(
-                      labelStyle: kSmallParaTextStyle,
-                      labelText: 'Name',
-                      filled: true,
-                      fillColor: Colors.blue.shade50,
-                      border: InputBorder.none, // Remove the border
-                      errorText: _nameError ? 'Name cannot be empty' : null,
-                      errorStyle: kSmallParaTextStyle.copyWith(
-                          color: Colors.red, fontSize: 12),
+                Row(
+                  children: [
+                    Expanded(
+                      child: ClipPath(
+                        clipper: ShapeBorderClipper(
+                          shape: ContinuousRectangleBorder(
+                              borderRadius:
+                                  const BorderRadius.all(Radius.circular(30)),
+                              side: BorderSide(
+                                color: softGrayStrokeCustomColor,
+                                width: 2,
+                              )),
+                        ),
+                        child: TextFormField(
+                          controller: _firstNameController,
+                          style: kSmallParaTextStyle,
+                          decoration: InputDecoration(
+                            labelStyle: kSmallParaTextStyle,
+                            labelText: 'First Name',
+                            filled: true,
+                            fillColor: Colors.blue.shade50,
+                            border: InputBorder.none, // Remove the border
+                            errorText:
+                                _nameError ? 'Name cannot be empty' : null,
+                            errorStyle: kSmallParaTextStyle.copyWith(
+                                color: Colors.red, fontSize: 12),
+                          ),
+                        ),
+                      ),
                     ),
-                  ),
+                    SizedBox(width: 12),
+                    Expanded(
+                      child: ClipPath(
+                        clipper: ShapeBorderClipper(
+                          shape: ContinuousRectangleBorder(
+                              borderRadius:
+                                  const BorderRadius.all(Radius.circular(30)),
+                              side: BorderSide(
+                                color: softGrayStrokeCustomColor,
+                                width: 2,
+                              )),
+                        ),
+                        child: TextFormField(
+                          controller: _secondNameController,
+                          style: kSmallParaTextStyle,
+                          decoration: InputDecoration(
+                            labelStyle: kSmallParaTextStyle,
+                            labelText: 'Last Name',
+                            filled: true,
+                            fillColor: Colors.blue.shade50,
+                            border: InputBorder.none, // Remove the border
+                            errorText:
+                                _nameError ? 'Name cannot be empty' : null,
+                            errorStyle: kSmallParaTextStyle.copyWith(
+                                color: Colors.red, fontSize: 12),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
                 SizedBox(height: 12),
                 ClipPath(
@@ -169,6 +209,8 @@ class _SignupPageState extends State<SignupPage> {
                   ),
                   child: TextFormField(
                     controller: _emailController,
+                    keyboardType: TextInputType.emailAddress,
+                    style: kSmallParaTextStyle,
                     decoration: InputDecoration(
                       filled: true,
                       fillColor: Colors.blue.shade50,
@@ -195,6 +237,7 @@ class _SignupPageState extends State<SignupPage> {
                   child: TextFormField(
                     controller: _passwordController,
                     obscureText: _obscurePassword,
+                    style: kSmallParaTextStyle,
                     decoration: InputDecoration(
                       filled: true,
                       fillColor: Colors.blue.shade50,
@@ -248,14 +291,27 @@ class _SignupPageState extends State<SignupPage> {
                     width: double.infinity,
                     height: 60,
                     child: ElevatedButton(
-                      onPressed: () {
+                      onPressed: () async {
                         setState(() {
-                          _nameError = _nameController.text.isEmpty;
+                          _nameError = _firstNameController.text.isEmpty;
                           _emailError = _emailController.text.isEmpty;
                         });
 
                         if (!_nameError && !_emailError) {
-                          // Add your signup logic here
+                          bool? success = await SignInBackend()
+                              .registerWithEmail(
+                                  _emailController.value.text,
+                                  _passwordController.value.text,
+                                  _firstNameController.value.text,
+                                  _secondNameController.value.text,
+                                  context);
+
+                          if (success != null && success) {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => HomeScreen()));
+                          }
                         }
                       },
                       style: ButtonStyle(

@@ -19,7 +19,7 @@ import 'package:pgc/views/all_services_screen.dart';
 import 'package:pgc/views/dashboard_screen.dart';
 import 'package:pgc/views/chat_screen.dart';
 import 'package:pgc/views/profile_screen.dart';
-import 'package:pgc/views/sign_in_screen.dart';
+import 'package:pgc/views/signin_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -36,9 +36,11 @@ class _HomeScreenState extends State<HomeScreen> {
     final servicesSnapshot = await FirebaseFirestore.instance
         .collection(Constants.fcServicesNode)
         .get();
-
+    int count = servicesSnapshot.docs.length;
     servicesSnapshot.docs.forEach((service) {
-      services.add(ServiceModel.fromJson(service.data()));
+      if (services.length < count) {
+        services.add(ServiceModel.fromJson(service.data()));
+      }
     });
 
     return services;
@@ -52,9 +54,11 @@ class _HomeScreenState extends State<HomeScreen> {
           .where('apptStatus', isEqualTo: Constants.appointmentActive)
           .get()
           .then((querySnapshot) {
+        int count = querySnapshot.docs.length;
         querySnapshot.docs.forEach((doc) {
-          appointments.add(
-              AppointmentModel.fromJson(doc.data() as Map<String, dynamic>));
+          if (appointments.length < count) {
+            appointments.add(AppointmentModel.fromJson(doc.data()));
+          }
         });
       });
       return appointments;
@@ -197,7 +201,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                         context,
                                                         MaterialPageRoute(
                                                             builder: (context) =>
-                                                                const SigninScreen()));
+                                                                const LoginScreen()));
                                                   },
                                                   child: Text("OK"),
                                                 )
@@ -307,7 +311,6 @@ class _HomeScreenState extends State<HomeScreen> {
                         child: ListView.builder(
                           shrinkWrap: true,
                           scrollDirection: Axis.horizontal,
-                          physics: const NeverScrollableScrollPhysics(),
                           itemCount: services.length,
                           itemBuilder: (BuildContext context, int index) {
                             return ServiceSquareCard(

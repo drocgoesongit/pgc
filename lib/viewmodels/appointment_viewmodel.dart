@@ -138,7 +138,9 @@ class AppointmentViewModel {
           .where('apptDate', isLessThan: HelperClass.getTwoDaysBeforeDate())
           .get()
           .then((value) {
+        log("got ${value.docs.length} appointments for updating to done");
         value.docs.forEach((element) async {
+          log("Updating ${element.id} to completed");
           await _firestore
               .collection(Constants.fcAppointments)
               .doc(element.id)

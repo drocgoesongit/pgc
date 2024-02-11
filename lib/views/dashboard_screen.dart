@@ -2,7 +2,9 @@ import 'dart:developer';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:pgc/admin_views/admin_chat_screen.dart';
 import 'package:pgc/admin_views/all_appointments_screen.dart';
+import 'package:pgc/admin_views/all_chat_views.dart';
 import 'package:pgc/admin_views/all_customers_screen.dart';
 import 'package:pgc/admin_views/appointment_detail.dart';
 import 'package:pgc/components/admin_rectangle_card.dart';
@@ -122,34 +124,40 @@ class Dashboard extends StatelessWidget {
                   return Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      DashboardCard(
-                        icon: Icons.calendar_today_rounded,
-                        text: "Appointments Remaining",
-                        value: appointmentRemaining.toString(),
-                      ),
-                      DashboardCard(
-                        icon: Icons.calendar_today_rounded,
-                        text: "Today's Appointments",
-                        value: todayAppointment.toString(),
-                      ),
-                      GestureDetector(
-                        onTap: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => AllCustomer(
-                                        numberOfTotalCustomers:
-                                            totalNumberOfCustomers,
-                                        numberOfAppointmentsRemaining:
-                                            appointmentRemaining,
-                                        numberOfTodaysAppointments:
-                                            todayAppointment,
-                                      )));
-                        },
+                      Expanded(
                         child: DashboardCard(
-                          icon: Icons.person,
-                          text: "Total Number of Customers",
-                          value: totalNumberOfCustomers.toString(),
+                          icon: Icons.calendar_today_rounded,
+                          text: "Appointments Remaining",
+                          value: appointmentRemaining.toString(),
+                        ),
+                      ),
+                      Expanded(
+                        child: DashboardCard(
+                          icon: Icons.calendar_today_rounded,
+                          text: "Today's Appointments",
+                          value: todayAppointment.toString(),
+                        ),
+                      ),
+                      Expanded(
+                        child: GestureDetector(
+                          onTap: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => AllCustomer(
+                                          numberOfTotalCustomers:
+                                              totalNumberOfCustomers,
+                                          numberOfAppointmentsRemaining:
+                                              appointmentRemaining,
+                                          numberOfTodaysAppointments:
+                                              todayAppointment,
+                                        )));
+                          },
+                          child: DashboardCard(
+                            icon: Icons.person,
+                            text: "Total Number of Customers",
+                            value: totalNumberOfCustomers.toString(),
+                          ),
                         ),
                       ),
                     ],
@@ -167,31 +175,42 @@ class Dashboard extends StatelessWidget {
             SizedBox(
               height: MediaQuery.of(context).size.height / 40,
             ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  "Recent Chats",
-                  style:
-                      kSmallParaTextStyle.copyWith(fontWeight: FontWeight.w600),
-                ),
-                Row(
-                  children: [
-                    Text(
-                      "View all",
-                      style: kSmallParaTextStyle.copyWith(
-                          fontWeight: FontWeight.bold, fontSize: 12),
-                    ),
-                    const SizedBox(
-                      width: 8,
-                    ),
-                    const Icon(
-                      Icons.arrow_forward_outlined,
-                      size: 14,
-                    )
-                  ],
-                ),
-              ],
+            GestureDetector(
+              onTap: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => AllChatsAdminScreen()));
+              },
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    "Recent Chats",
+                    style: kSmallParaTextStyle.copyWith(
+                        fontWeight: FontWeight.w600),
+                  ),
+                  Row(
+                    children: [
+                      Text(
+                        "View all",
+                        style: kSmallParaTextStyle.copyWith(
+                            fontWeight: FontWeight.bold, fontSize: 12),
+                      ),
+                      const SizedBox(
+                        width: 8,
+                      ),
+                      const Icon(
+                        Icons.arrow_forward_outlined,
+                        size: 14,
+                      )
+                    ],
+                  ),
+                ],
+              ),
+            ),
+            SizedBox(
+              height: MediaQuery.of(context).size.height / 60,
             ),
             FutureBuilder(
                 future: getRecentChats(),
@@ -211,13 +230,11 @@ class Dashboard extends StatelessWidget {
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                      builder: (context) =>
-                                          AppointmentDetailScreen(
-                                              appointmentModel:
-                                                  appointments[index])));
+                                      builder: (context) => AdminChatScreen(
+                                          chatPlusUserId:
+                                              chats[index].chatId)));
                             },
                             child: RecentChat(
-                                image: "",
                                 id: chats[index].chatId,
                                 chat: chats[index].lastMessage,
                                 timestamp: HelperClass.formatTimestampToAmPm(

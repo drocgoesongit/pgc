@@ -15,7 +15,7 @@ import 'package:pgc/model/service_model.dart';
 import 'package:pgc/viewmodels/appointment_viewmodel.dart';
 import 'package:pgc/viewmodels/slots_status_viewmodel.dart';
 import 'package:pgc/views/home_screen.dart';
-import 'package:pgc/views/sign_in_screen.dart';
+import 'package:pgc/views/signin_screen.dart';
 
 class ServicesDetailScreen extends StatefulWidget {
   const ServicesDetailScreen(
@@ -408,7 +408,7 @@ class _ServicesDetailScreenState extends State<ServicesDetailScreen> {
                                                     context,
                                                     MaterialPageRoute(
                                                         builder: (context) =>
-                                                            SigninScreen()));
+                                                            LoginScreen()));
                                               },
                                             );
                                           });

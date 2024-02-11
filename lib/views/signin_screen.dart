@@ -1,6 +1,9 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:pgc/constants/color_const.dart';
 import 'package:pgc/constants/text_const.dart';
+import 'package:pgc/viewmodels/signin_viewmodel.dart';
 import 'package:pgc/views/home_screen.dart';
 import 'package:pgc/views/signup_screen.dart';
 import 'package:pgc/views/forgot_password_screen.dart';
@@ -227,13 +230,25 @@ class _LoginScreenState extends State<LoginScreen> {
                     width: double.infinity,
                     height: 60,
                     child: ElevatedButton(
-                      onPressed: () {
+                      onPressed: () async {
                         setState(() {
                           _emailError = _emailController.text.isEmpty;
                         });
 
                         if (!_emailError) {
-                          // Add your signup logic here
+                          String email = _emailController.value.text;
+                          String password = _passwordController.value.text;
+                          log("email $email password $password");
+                          if (email.isNotEmpty && password.isNotEmpty) {
+                            bool? loggedIn = await SignInBackend()
+                                .loginWithEmail(email, password, context);
+                            if (loggedIn == true) {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => HomeScreen()));
+                            }
+                          }
                         }
                       },
                       style: ButtonStyle(

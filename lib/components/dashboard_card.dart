@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:pgc/constants/color_const.dart';
 import 'package:pgc/constants/text_const.dart';
 
@@ -17,8 +18,9 @@ class DashboardCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(15.46),
+      elevation: 0,
+      shape: ContinuousRectangleBorder(
+        borderRadius: BorderRadius.circular(30),
         side: BorderSide(
           color: softGrayStrokeCustomColor,
           width: 2,
@@ -26,9 +28,8 @@ class DashboardCard extends StatelessWidget {
       ),
       surfaceTintColor: Colors.white,
       child: Container(
-        width: 100,
         child: Padding(
-          padding: EdgeInsets.all(8.0),
+          padding: EdgeInsets.symmetric(vertical: 16.0, horizontal: 16),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -133,14 +134,12 @@ class CustomerDetailCard extends StatelessWidget {
 }
 
 class RecentChat extends StatelessWidget {
-  final String image; // Replace with the actual avatar image URL
   final String id;
   final String chat;
   final String timestamp;
 
   const RecentChat({
     Key? key,
-    required this.image,
     required this.id,
     required this.chat,
     required this.timestamp,
@@ -149,11 +148,11 @@ class RecentChat extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      // padding: EdgeInsets.all(16),
+      margin: EdgeInsets.only(bottom: 16),
       child: Row(
         children: [
           CircleAvatar(
-            backgroundImage: AssetImage(image),
+            backgroundImage: AssetImage('assets/images/avatar.png'),
             radius: 24,
           ),
           SizedBox(width: 16),

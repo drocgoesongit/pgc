@@ -7,6 +7,8 @@ import 'package:pgc/constants/const.dart';
 import 'package:pgc/constants/text_const.dart';
 import 'package:pgc/model/appointment_model.dart';
 import 'package:pgc/model/user_model.dart';
+import 'package:pgc/views/dashboard_screen.dart';
+import 'package:pgc/views/signin_screen.dart';
 
 class ProfileScreen extends StatefulWidget {
   @override
@@ -15,9 +17,20 @@ class ProfileScreen extends StatefulWidget {
 
 class _ProfileScreenState extends State<ProfileScreen> {
   List<AppointmentModel> appointments = [];
+  bool admin = false;
 
   Future<UserModel> _fetchUserData() async {
     User? user = FirebaseAuth.instance.currentUser;
+
+    FirebaseFirestore.instance
+        .collection("admin")
+        .where('admin', isEqualTo: user!.uid)
+        .get()
+        .then((value) {
+      if (value.docs.isNotEmpty) {
+        admin = true;
+      }
+    });
     if (user != null) {
       DocumentSnapshot snapshot = await FirebaseFirestore.instance
           .collection('users')
@@ -82,7 +95,22 @@ class _ProfileScreenState extends State<ProfileScreen> {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return Center(child: CircularProgressIndicator());
           } else if (snapshot.hasError) {
-            return Center(child: Text('Error: ${snapshot.error}'));
+            return Center(
+                child: Column(
+              children: [
+                Text('Error: ${snapshot.error}'),
+                SizedBox(height: 20),
+                ElevatedButton(
+                  onPressed: () {
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) {
+                      return LoginScreen();
+                    }));
+                  },
+                  child: Text('Login'),
+                ),
+              ],
+            ));
           } else if (!snapshot.hasData) {
             return GestureDetector(
               onTap: () {
@@ -198,10 +226,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         onTap: () {},
                         child: buildMenuItem(Icons.info_rounded, "About us")),
                     SizedBox(height: MediaQuery.of(context).size.height / 40),
-                    GestureDetector(
-                        onTap: () {},
-                        child: buildMenuItem(
-                            Icons.support_agent_rounded, "Contact support")),
+                    if (admin)
+                      GestureDetector(
+                          onTap: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => Dashboard()));
+                          },
+                          child: buildMenuItem(
+                              Icons.support_agent_rounded, "Admin Panel")),
                     SizedBox(height: MediaQuery.of(context).size.height / 40),
                     GestureDetector(
                         onTap: () {},

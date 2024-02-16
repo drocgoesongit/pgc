@@ -11,6 +11,7 @@ import 'package:pgc/web_components/review_card.dart';
 import 'package:pgc/web_components/service_square_card.dart';
 import 'package:pgc/web_components/testimonial.dart';
 import 'package:pgc/web_components/usp.dart';
+import 'package:pgc/web_views/web_dashboard_screen.dart';
 
 class LandingPage extends StatelessWidget {
   const LandingPage({super.key});
@@ -23,10 +24,16 @@ class LandingPage extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Text(
-              "Purrfectly Groomed",
-              style: kMainTitleBoldTextStyle.copyWith(
-                  color: primaryBlueCustomColor),
+            GestureDetector(
+              onTap: () {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => WebDashboard()));
+              },
+              child: Text(
+                "Purrfectly Groomed",
+                style: kMainTitleBoldTextStyle.copyWith(
+                    color: primaryBlueCustomColor),
+              ),
             ),
             Row(
               children: [

@@ -29,12 +29,12 @@ class AdminCard extends StatelessWidget {
         ),
       ),
       child: Container(
-        color: Colors.white,
+        color: Colors.transparent,
         child: Padding(
           padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 16),
           child: Row(
             // crossAxisAlignment: CrossAxisAlignment.start,
-            // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               // Image on the extreme left
               Container(
@@ -62,7 +62,7 @@ class AdminCard extends StatelessWidget {
                   ),
                 ),
               ),
-              SizedBox(width: MediaQuery.of(context).size.width / 20),
+              SizedBox(width: MediaQuery.of(context).size.width / 80),
               // Column of multiple texts
               Expanded(
                 child: Column(
@@ -125,7 +125,7 @@ class CustomerCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: Colors.white,
+      color: Colors.transparent,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [

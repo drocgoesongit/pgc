@@ -22,12 +22,11 @@ class DashboardSquareCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () {
-        // Add navigation to service detail screen
-      },
+      onTap: () {},
       child: Container(
-        width: 140,
+        width: MediaQuery.of(context).size.width * 0.12,
         height: 180,
+        margin: const EdgeInsets.symmetric(horizontal: 12),
         child: Card(
           color: cuscolors,
           shape: ContinuousRectangleBorder(

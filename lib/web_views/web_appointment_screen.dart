@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:pgc/constants/color_const.dart';
+import 'package:pgc/constants/helper_class.dart';
 import 'package:pgc/constants/text_const.dart';
 import 'package:pgc/web_components/appointment_static.dart';
 import 'package:pgc/web_components/dashboard_static.dart';
@@ -113,170 +114,185 @@ class _WebDashboardState extends State<WebAppoinment> {
             child: Padding(
               padding: EdgeInsets.symmetric(
                   horizontal: MediaQuery.of(context).size.width / 80),
-              child: SingleChildScrollView(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Container(
-                      child: Row(
-                        children: [
-                          Text(
-                            "Appointments",
-                            style: kMainTitleBoldTextStyle,
-                          ),
-                          SizedBox(
-                            width: MediaQuery.of(context).size.width / 20,
-                          ),
-                          Expanded(
-                            child: ClipPath(
-                              clipper: ShapeBorderClipper(
-                                shape: ContinuousRectangleBorder(
-                                    borderRadius: const BorderRadius.all(
-                                        Radius.circular(30)),
-                                    side: BorderSide.none),
-                              ),
-                              child: Container(
-                                // width: 512,
-                                height:
-                                    60, // Set a fixed height for the TextField
-                                child: TextFormField(
-                                  textAlign: TextAlign.start,
-                                  decoration: InputDecoration(
-                                    filled: true,
-                                    fillColor: Colors.grey.shade100,
-                                    contentPadding: const EdgeInsets.symmetric(
-                                        vertical: 10),
-                                    hintText: "Search here...",
-                                    hintStyle: kSmallParaTextStyle.copyWith(
-                                      fontWeight: FontWeight.w500,
-                                      color: Colors.grey,
-                                    ),
-                                    prefixIcon: Icon(
-                                      Icons.search_rounded,
-                                      color: primaryBlueCustomColor,
-                                    ),
-                                    border: InputBorder
-                                        .none, // Remove the underline
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Container(
+                    child: Row(
+                      children: [
+                        Text(
+                          "Appointments",
+                          style: kMainTitleBoldTextStyle,
+                        ),
+                        SizedBox(
+                          width: MediaQuery.of(context).size.width / 20,
+                        ),
+                        Expanded(
+                          child: ClipPath(
+                            clipper: ShapeBorderClipper(
+                              shape: ContinuousRectangleBorder(
+                                  borderRadius: const BorderRadius.all(
+                                      Radius.circular(30)),
+                                  side: BorderSide.none),
+                            ),
+                            child: Container(
+                              // width: 512,
+                              height:
+                                  60, // Set a fixed height for the TextField
+                              child: TextFormField(
+                                textAlign: TextAlign.start,
+                                decoration: InputDecoration(
+                                  filled: true,
+                                  fillColor: Colors.grey.shade100,
+                                  contentPadding:
+                                      const EdgeInsets.symmetric(vertical: 10),
+                                  hintText: "Search here...",
+                                  hintStyle: kSmallParaTextStyle.copyWith(
+                                    fontWeight: FontWeight.w500,
+                                    color: Colors.grey,
                                   ),
+                                  prefixIcon: Icon(
+                                    Icons.search_rounded,
+                                    color: primaryBlueCustomColor,
+                                  ),
+                                  border:
+                                      InputBorder.none, // Remove the underline
                                 ),
                               ),
                             ),
                           ),
+                        ),
 
-                          SizedBox(
-                            width: MediaQuery.of(context).size.width / 40,
-                          ), // Add some space between the text and the dropdown button
-                          DropdownButton<String>(
-                            value: selectedLanguage,
-                            onChanged: (String? newValue) {
-                              if (newValue != null) {
-                                setState(() {
-                                  selectedLanguage = newValue;
-                                });
-                              }
-                            },
-                            items: <String>['English', 'Hindi', 'Arabic']
-                                .map<DropdownMenuItem<String>>((String value) {
-                              return DropdownMenuItem<String>(
-                                value: value,
-                                child: Row(
-                                  children: [
-                                    _buildFlagIcon(value),
-                                    SizedBox(width: 8),
-                                    Text(
-                                      value,
-                                      style: kSmallParaTextStyle,
-                                    ),
-                                  ],
-                                ),
-                              );
-                            }).toList(),
-                            underline: Container(), // Remove the underline
-                          ),
-
-                          SizedBox(
-                            width: MediaQuery.of(context).size.width / 40,
-                          ),
-                          Stack(
-                            children: [
-                              ClipPath(
-                                clipper: ShapeBorderClipper(
-                                  shape: ContinuousRectangleBorder(
-                                    borderRadius: const BorderRadius.all(
-                                        Radius.circular(30)),
-                                  ),
-                                ),
-                                child: Container(
-                                  height: 48,
-                                  width: 48,
-                                  color: Colors.amberAccent.withOpacity(0.5),
-                                  child: Icon(
-                                    Icons.notifications_none_rounded,
-                                    color: Colors.amber.shade700,
-                                  ),
-                                ),
-                              ),
-                              Positioned(
-                                top: 8,
-                                right: 8,
-                                child: Container(
-                                  width: 6,
-                                  height: 6,
-                                  decoration: BoxDecoration(
-                                    color: Colors.red,
-                                    shape: BoxShape.circle,
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                          SizedBox(
-                            width: MediaQuery.of(context).size.width / 90,
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            // crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Container(
-                                child: Image.asset("assets/images/profile.png"),
-                                decoration: const BoxDecoration(
-                                    borderRadius: BorderRadius.all(
-                                        Radius.circular(15.46))),
-                              ),
-                              SizedBox(
-                                width: MediaQuery.of(context).size.width / 90,
-                              ),
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
+                        SizedBox(
+                          width: MediaQuery.of(context).size.width / 40,
+                        ), // Add some space between the text and the dropdown button
+                        DropdownButton<String>(
+                          value: selectedLanguage,
+                          onChanged: (String? newValue) {
+                            if (newValue != null) {
+                              setState(() {
+                                selectedLanguage = newValue;
+                              });
+                            }
+                          },
+                          items: <String>['English', 'Hindi', 'Arabic']
+                              .map<DropdownMenuItem<String>>((String value) {
+                            return DropdownMenuItem<String>(
+                              value: value,
+                              child: Row(
                                 children: [
+                                  _buildFlagIcon(value),
+                                  SizedBox(width: 8),
                                   Text(
-                                    "Name",
-                                    style: kSmallParaTextStyle.copyWith(
-                                        fontWeight: FontWeight.bold),
-                                  ),
-                                  Text(
-                                    "Admin",
-                                    style: kSmallParaTextStyle.copyWith(
-                                        fontWeight: FontWeight.w500,
-                                        fontSize: 12),
+                                    value,
+                                    style: kSmallParaTextStyle,
                                   ),
                                 ],
-                              )
-                            ],
-                          ),
-                          SizedBox(
-                            width: MediaQuery.of(context).size.width / 40,
-                          ),
-                        ],
+                              ),
+                            );
+                          }).toList(),
+                          underline: Container(), // Remove the underline
+                        ),
+
+                        SizedBox(
+                          width: MediaQuery.of(context).size.width / 40,
+                        ),
+                        Stack(
+                          children: [
+                            ClipPath(
+                              clipper: ShapeBorderClipper(
+                                shape: ContinuousRectangleBorder(
+                                  borderRadius: const BorderRadius.all(
+                                      Radius.circular(30)),
+                                ),
+                              ),
+                              child: Container(
+                                height: 48,
+                                width: 48,
+                                color: Colors.amberAccent.withOpacity(0.5),
+                                child: Icon(
+                                  Icons.notifications_none_rounded,
+                                  color: Colors.amber.shade700,
+                                ),
+                              ),
+                            ),
+                            Positioned(
+                              top: 8,
+                              right: 8,
+                              child: Container(
+                                width: 6,
+                                height: 6,
+                                decoration: BoxDecoration(
+                                  color: Colors.red,
+                                  shape: BoxShape.circle,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                        SizedBox(
+                          width: MediaQuery.of(context).size.width / 90,
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          // crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Container(
+                              child: Image.asset("assets/images/profile.png"),
+                              decoration: const BoxDecoration(
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(15.46))),
+                            ),
+                            SizedBox(
+                              width: MediaQuery.of(context).size.width / 90,
+                            ),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  "Name",
+                                  style: kSmallParaTextStyle.copyWith(
+                                      fontWeight: FontWeight.bold),
+                                ),
+                                Text(
+                                  "Admin",
+                                  style: kSmallParaTextStyle.copyWith(
+                                      fontWeight: FontWeight.w500,
+                                      fontSize: 12),
+                                ),
+                              ],
+                            )
+                          ],
+                        ),
+                        SizedBox(
+                          width: MediaQuery.of(context).size.width / 40,
+                        ),
+                      ],
+                    ),
+                  ),
+                  SizedBox(),
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Container(
+                        width: MediaQuery.of(context).size.width * 0.4,
+                        child: AppointmentStatic(
+                          dates: HelperClass.generateFuture20DateList(),
+                        ),
                       ),
-                    ),
-                    SizedBox(
-                      height: MediaQuery.of(context).size.height / 40,
-                    ),
-                    AppointmentStatic()
-                  ],
-                ),
+                      SizedBox(
+                        width: MediaQuery.of(context).size.width / 20,
+                      ),
+                      Container(
+                        width: MediaQuery.of(context).size.width * 0.4,
+                        child: AppointmentStatic(
+                          dates: HelperClass.generateFuture20DateList(),
+                        ),
+                      ),
+                    ],
+                  )
+                ],
               ),
             ),
           )

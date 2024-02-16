@@ -35,7 +35,7 @@ class _ServicesDetailScreenState extends State<ServicesDetailScreen> {
   Future<OneHourAvaialabilityModel> getDates(String date) async {
     try {
       if (selectedDate == "") {
-        datesList = HelperClass.generateDateList();
+        datesList = HelperClass.generateFuture20DateList();
         selectedDate = HelperClass.getSameDayDate();
         avaialabilityModel = await SlotsStatusViewModel()
             .getOneHourAvailability(widget.serviceId, selectedDate);

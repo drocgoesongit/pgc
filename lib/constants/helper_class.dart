@@ -31,7 +31,7 @@ class HelperClass {
     return formattedDate;
   }
 
-  static List<String> generateDateList() {
+  static List<String> generateFuture20DateList() {
     String _twoDigits(int n) {
       if (n >= 10) {
         return '$n';

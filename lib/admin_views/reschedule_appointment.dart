@@ -34,7 +34,7 @@ class _AppointmentRescheduleScreenState
   Future<OneHourAvaialabilityModel> getDates(String date) async {
     try {
       if (selectedDate == "") {
-        datesList = HelperClass.generateDateList();
+        datesList = HelperClass.generateFuture20DateList();
         selectedDate = HelperClass.getSameDayDate();
         avaialabilityModel = await SlotsStatusViewModel()
             .getOneHourAvailability(

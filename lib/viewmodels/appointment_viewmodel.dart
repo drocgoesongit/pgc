@@ -149,4 +149,54 @@ class AppointmentViewModel {
       log(e.toString());
     }
   }
+
+  Future<List<AppointmentModel>> fetchAppointments(selectedDate) async {
+    List<AppointmentModel> appointments = [];
+
+    try {
+      if (selectedDate == '') {
+        selectedDate = HelperClass.getSameDayDate();
+
+        appointments = [];
+
+        // Fetch appointments for today
+        await FirebaseFirestore.instance
+            .collection(Constants.fcAppointments)
+            .where('apptDate', isEqualTo: selectedDate)
+            .get()
+            .then((querySnapshot) {
+          querySnapshot.docs.forEach((doc) {
+            log(querySnapshot.docs.toString());
+            appointments.add(
+                AppointmentModel.fromJson(doc.data() as Map<String, dynamic>));
+          });
+        });
+
+        return appointments;
+      } else {
+        log("selected date = $selectedDate  in fetch function");
+        appointments = [];
+        // Fetch appointments for selected date
+        await FirebaseFirestore.instance
+            .collection(Constants.fcAppointments)
+            .where('apptDate', isEqualTo: selectedDate)
+            .where('apptStatus', isEqualTo: Constants.appointmentActive)
+            .get()
+            .then((querySnapshot) {
+          querySnapshot.docs.forEach((doc) {
+            log(querySnapshot.docs.toString());
+
+            appointments.add(
+                AppointmentModel.fromJson(doc.data() as Map<String, dynamic>));
+          });
+        });
+
+        return appointments;
+      }
+    } catch (e) {
+      print(e);
+      log(e.toString());
+      return appointments;
+    }
+  }
 }

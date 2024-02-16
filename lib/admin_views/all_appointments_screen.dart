@@ -26,7 +26,7 @@ class _AllAppointmentsScreenState extends State<AllAppointmentsScreen> {
     try {
       if (selectedDate == '') {
         selectedDate = HelperClass.getSameDayDate();
-        datesList = HelperClass.generateDateList();
+        datesList = HelperClass.generateFuture20DateList();
 
         appointments = [];
 

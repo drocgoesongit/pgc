@@ -13,6 +13,8 @@ import 'package:pgc/views/signin_screen.dart';
 import 'package:pgc/views/signup_screen.dart';
 import 'package:pgc/views/splash_screen.dart';
 import 'package:pgc/views/forgot_password_screen.dart';
+import 'package:pgc/web_views/web_appointment_screen.dart';
+import 'package:pgc/web_views/web_chat_screen.dart';
 import 'package:pgc/web_views/web_dashboard_screen.dart';
 import 'package:pgc/web_views/web_landing.dart';
 

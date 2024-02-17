@@ -1,21 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:pgc/constants/color_const.dart';
+import 'package:pgc/constants/helper_class.dart';
 import 'package:pgc/constants/text_const.dart';
+import 'package:pgc/web_components/appointment_detail_static.dart';
+import 'package:pgc/web_components/chat_static.dart';
 import 'package:pgc/web_components/dashboard_static.dart';
 import 'package:pgc/web_views/web_appointment_screen.dart';
 import 'package:pgc/web_views/web_chat_screen.dart';
+import 'package:pgc/web_views/web_dashboard_screen.dart';
 import 'package:pgc/web_views/web_landing.dart';
 
-class WebDashboard extends StatefulWidget {
-  const WebDashboard({super.key});
+class WebAppointmentDetail extends StatefulWidget {
+  const WebAppointmentDetail({super.key});
 
   @override
-  State<WebDashboard> createState() => _WebDashboardState();
+  State<WebAppointmentDetail> createState() => _AppointmentDetailState();
 }
 
-class _WebDashboardState extends State<WebDashboard> {
-  int _selectedIndex = 0;
+class _AppointmentDetailState extends State<WebAppointmentDetail> {
+  int _selectedIndex = 1;
   bool showleading = false;
   String selectedLanguage = 'English';
   NavigationRailLabelType labelType = NavigationRailLabelType.all;
@@ -131,14 +135,15 @@ class _WebDashboardState extends State<WebDashboard> {
               child: SingleChildScrollView(
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.start,
-                  // crossAxisAlignment: CrossAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.max,
                   children: [
                     Container(
                       child: // Default language
                           Row(
                         children: [
                           Text(
-                            "Dashboard",
+                            "Appointment Detail",
                             style: kMainTitleBoldTextStyle,
                           ),
                           SizedBox(
@@ -290,7 +295,7 @@ class _WebDashboardState extends State<WebDashboard> {
                     SizedBox(
                       height: MediaQuery.of(context).size.height / 40,
                     ),
-                    DashboardStatic()
+                    AppointmentDetailStatic(),
                   ],
                 ),
               ),

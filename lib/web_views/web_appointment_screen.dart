@@ -5,6 +5,9 @@ import 'package:pgc/constants/helper_class.dart';
 import 'package:pgc/constants/text_const.dart';
 import 'package:pgc/web_components/appointment_static.dart';
 import 'package:pgc/web_components/dashboard_static.dart';
+import 'package:pgc/web_views/web_appointment_detail_screen.dart';
+import 'package:pgc/web_views/web_chat_screen.dart';
+import 'package:pgc/web_views/web_customer_detail.dart';
 import 'package:pgc/web_views/web_dashboard_screen.dart';
 import 'package:pgc/web_views/web_landing.dart';
 
@@ -107,6 +110,13 @@ class _WebDashboardState extends State<WebAppoinment> {
                   MaterialPageRoute(builder: (context) => WebDashboard()),
                 );
               }
+              if (index == 2) {
+                // Navigate to the Appointments page
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => WebChat()),
+                );
+              }
             },
             elevation: 2,
           ),
@@ -121,9 +131,18 @@ class _WebDashboardState extends State<WebAppoinment> {
                   Container(
                     child: Row(
                       children: [
-                        Text(
-                          "Appointments",
-                          style: kMainTitleBoldTextStyle,
+                        GestureDetector(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => WebAppointmentDetail()),
+                            );
+                          },
+                          child: Text(
+                            "Appointments",
+                            style: kMainTitleBoldTextStyle,
+                          ),
                         ),
                         SizedBox(
                           width: MediaQuery.of(context).size.width / 20,
@@ -234,36 +253,45 @@ class _WebDashboardState extends State<WebAppoinment> {
                         SizedBox(
                           width: MediaQuery.of(context).size.width / 90,
                         ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          // crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Container(
-                              child: Image.asset("assets/images/profile.png"),
-                              decoration: const BoxDecoration(
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(15.46))),
-                            ),
-                            SizedBox(
-                              width: MediaQuery.of(context).size.width / 90,
-                            ),
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  "Name",
-                                  style: kSmallParaTextStyle.copyWith(
-                                      fontWeight: FontWeight.bold),
-                                ),
-                                Text(
-                                  "Admin",
-                                  style: kSmallParaTextStyle.copyWith(
-                                      fontWeight: FontWeight.w500,
-                                      fontSize: 12),
-                                ),
-                              ],
-                            )
-                          ],
+                        GestureDetector(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => WebCustomerDetail()),
+                            );
+                          },
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            // crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Container(
+                                child: Image.asset("assets/images/profile.png"),
+                                decoration: const BoxDecoration(
+                                    borderRadius: BorderRadius.all(
+                                        Radius.circular(15.46))),
+                              ),
+                              SizedBox(
+                                width: MediaQuery.of(context).size.width / 90,
+                              ),
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    "Name",
+                                    style: kSmallParaTextStyle.copyWith(
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                  Text(
+                                    "Admin",
+                                    style: kSmallParaTextStyle.copyWith(
+                                        fontWeight: FontWeight.w500,
+                                        fontSize: 12),
+                                  ),
+                                ],
+                              )
+                            ],
+                          ),
                         ),
                         SizedBox(
                           width: MediaQuery.of(context).size.width / 40,

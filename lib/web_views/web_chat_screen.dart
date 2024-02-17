@@ -1,21 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:pgc/constants/color_const.dart';
+import 'package:pgc/constants/helper_class.dart';
 import 'package:pgc/constants/text_const.dart';
+import 'package:pgc/web_components/chat_static.dart';
 import 'package:pgc/web_components/dashboard_static.dart';
 import 'package:pgc/web_views/web_appointment_screen.dart';
-import 'package:pgc/web_views/web_chat_screen.dart';
+import 'package:pgc/web_views/web_dashboard_screen.dart';
 import 'package:pgc/web_views/web_landing.dart';
 
-class WebDashboard extends StatefulWidget {
-  const WebDashboard({super.key});
+class WebChat extends StatefulWidget {
+  const WebChat({super.key});
 
   @override
-  State<WebDashboard> createState() => _WebDashboardState();
+  State<WebChat> createState() => _WebChatState();
 }
 
-class _WebDashboardState extends State<WebDashboard> {
-  int _selectedIndex = 0;
+class _WebChatState extends State<WebChat> {
+  int _selectedIndex = 2;
   bool showleading = false;
   String selectedLanguage = 'English';
   NavigationRailLabelType labelType = NavigationRailLabelType.all;
@@ -131,14 +133,15 @@ class _WebDashboardState extends State<WebDashboard> {
               child: SingleChildScrollView(
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.start,
-                  // crossAxisAlignment: CrossAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.max,
                   children: [
                     Container(
                       child: // Default language
                           Row(
                         children: [
                           Text(
-                            "Dashboard",
+                            "Chats",
                             style: kMainTitleBoldTextStyle,
                           ),
                           SizedBox(
@@ -153,7 +156,6 @@ class _WebDashboardState extends State<WebDashboard> {
                                     side: BorderSide.none),
                               ),
                               child: Container(
-                                // width: 512,
                                 height:
                                     60, // Set a fixed height for the TextField
                                 child: TextFormField(
@@ -290,7 +292,9 @@ class _WebDashboardState extends State<WebDashboard> {
                     SizedBox(
                       height: MediaQuery.of(context).size.height / 40,
                     ),
-                    DashboardStatic()
+                    WebChatStatic(
+                        // dates: HelperClass.generateFuture20DateList(),
+                        ),
                   ],
                 ),
               ),

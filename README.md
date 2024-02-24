@@ -1,6 +1,8 @@
-# PGC
+# PGC  [(Download from Google Play)](https://play.google.com/store/apps/details?id=com.pgc.demo)
+
 
 # Pet Grooming Appointment Booking App
+![pgc showcase](https://github.com/drocgoesongit/pgc/assets/82268112/b4db38fe-f99e-4571-b580-e1c225779b43)
 
 ## Overview
 

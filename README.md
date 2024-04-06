@@ -3,6 +3,8 @@
 
 # Pet Grooming Appointment Booking App
 ![pgc showcase](https://github.com/drocgoesongit/pgc/assets/82268112/b4db38fe-f99e-4571-b580-e1c225779b43)
+![13](https://github.com/drocgoesongit/pgc/assets/82268112/9444cb13-18bd-4c8b-ba74-f5e7bd9cfb8b)
+![14](https://github.com/drocgoesongit/pgc/assets/82268112/b4225754-51b2-48af-b078-69338173c17e)
 
 ## Overview
 
